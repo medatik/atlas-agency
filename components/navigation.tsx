@@ -51,8 +51,9 @@ export function Navigation() {
           onClick={handleLogoClick}
           className="flex items-center space-x-2 hover:opacity-80 transition-opacity cursor-pointer"
         >
-          <div className="h-8 w-8 rounded-full bg-primary shadow-md"></div>
-          <span className="font-bold text-xl">Creative Agency</span>
+          {/* <div className="h-8 w-8 rounded-full bg-primary shadow-md"></div>
+          <span className="font-bold text-xl">Creative Agency</span> */}
+          <img src="/icon_red.png" alt="Logo" className="h-8 w-8 rounded-full" />
         </button>
 
         {/* Desktop Navigation */}

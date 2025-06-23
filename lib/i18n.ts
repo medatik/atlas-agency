@@ -11,7 +11,7 @@ export const translations = {
       components: "Components",
     },
     hero: {
-      title: "Creative Agency",
+      title: "ATLAS Agency",
       subtitle: "Visual Identity & Web Development",
       description:
         "We create stunning visual identities and modern websites that help your business stand out in the digital world.",
@@ -63,7 +63,7 @@ export const translations = {
       components: "Composants",
     },
     hero: {
-      title: "Agence Créative",
+      title: "ATLAS Agence",
       subtitle: "Identité Visuelle & Développement Web",
       description:
         "Nous créons des identités visuelles époustouflantes et des sites web modernes qui aident votre entreprise à se démarquer dans le monde numérique.",
@@ -118,7 +118,7 @@ export const translations = {
       components: "المكونات",
     },
     hero: {
-      title: "وكالة إبداعية",
+      title: "وكالة أطلس",
       subtitle: "الهوية البصرية وتطوير المواقع",
       description: "نحن ننشئ هويات بصرية مذهلة ومواقع ويب حديثة تساعد عملك على التميز في العالم الرقمي.",
       cta: "ابدأ الآن",
