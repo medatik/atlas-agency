@@ -21,6 +21,7 @@ export const translations = {
     services: {
       title: "Our Services",
       subtitle: "What we offer",
+      buttonText : "Choose Service",
       visual: {
         title: "Visual Identity Creation",
         description: "Complete brand identity including logos, color schemes, typography, and brand guidelines.",
@@ -73,6 +74,7 @@ export const translations = {
     services: {
       title: "Nos Services",
       subtitle: "Ce que nous offrons",
+      buttonText: "Choisir le Service",
       visual: {
         title: "Création d'Identité Visuelle",
         description:
@@ -127,6 +129,7 @@ export const translations = {
     services: {
       title: "خدماتنا",
       subtitle: "ما نقدمه",
+      buttonText: "اختر الخدمة",
       visual: {
         title: "إنشاء الهوية البصرية",
         description:
