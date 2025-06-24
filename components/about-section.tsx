@@ -26,33 +26,37 @@ export function AboutSection({ t }: AboutSectionProps) {
   ]
 
   return (
-    <section id="about" className="py-20">
+    <section id="about" className="py-12 sm:py-16 md:py-20">
       <div className="container">
-        <div className="grid gap-16 lg:grid-cols-2 items-center">
-          <div className="space-y-6">
+        <div className="grid gap-12 lg:gap-16 lg:grid-cols-2 items-center">
+          <div className="space-y-6 text-center lg:text-left">
             <div className="space-y-4">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t.about.title}</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">{t.about.description}</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
+                {t.about.title}
+              </h2>
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+                {t.about.description}
+              </p>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
               {skills.map((skill) => (
-                <Badge key={skill} variant="secondary" className="px-3 py-1">
+                <Badge key={skill} variant="secondary" className="px-3 py-1 text-xs sm:text-sm">
                   {skill}
                 </Badge>
               ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 sm:gap-6">
             {stats.map((stat, index) => (
-              <Card key={index} className="text-center p-6 hover:shadow-md transition-shadow">
+              <Card key={index} className="text-center p-4 sm:p-6 hover:shadow-md transition-shadow">
                 <CardContent className="space-y-2 p-0">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                    <stat.icon className="h-6 w-6 text-primary" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                    <stat.icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                   </div>
-                  <div className="text-2xl font-bold text-primary">{stat.value}</div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
+                  <div className="text-xl sm:text-2xl font-bold text-primary">{stat.value}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
                 </CardContent>
               </Card>
             ))}

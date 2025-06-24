@@ -9,31 +9,40 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({ t }: HeroSectionProps) {
+  const scrollToServices = () => {
+    const servicesSection = document.getElementById("services")
+    if (servicesSection) {
+      const headerHeight = 80
+      const elementPosition = servicesSection.offsetTop - headerHeight
+      window.scrollTo({ 
+        top: elementPosition, 
+        behavior: "smooth" 
+      })
+    }
+  }
+
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/10 py-20 md:py-32">
+    <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/10 py-12 sm:py-16 md:py-20 lg:py-32">
       <div className="container relative">
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-16 items-center">
-          <div className="space-y-6">
+          <div className="space-y-6 text-center lg:text-left">
             <div className="space-y-4">
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
                 <span className="text-primary">{t.hero.title}</span>
                 <br />
-                <span className="text-muted-foreground text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+                <span className="text-muted-foreground text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
                   {t.hero.subtitle}
                 </span>
               </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl">{t.hero.description}</p>
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto lg:mx-0">
+                {t.hero.description}
+              </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Button
                 size="lg"
-                className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300"
-                onClick={() => {
-                  const servicesSection = document.getElementById("services")
-                  if (servicesSection) {
-                    servicesSection.scrollIntoView({ behavior: "smooth" })
-                  }
-                }}
+                className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
+                onClick={scrollToServices}
               >
                 {t.hero.cta}
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -41,27 +50,29 @@ export function HeroSection({ t }: HeroSectionProps) {
               <Button
                 variant="outline"
                 size="lg"
-                className="bg-background/80 backdrop-blur-sm text-foreground border-primary/20 hover:bg-background/90 shadow-md hover:shadow-lg transition-all duration-300"
+                className="bg-background/80 backdrop-blur-sm text-foreground border-primary/20 hover:bg-background/90 shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto"
               >
                 <Play className="mr-2 h-4 w-4" />
                 {t.hero.learnMore}
               </Button>
             </div>
           </div>
-          <div className="relative">
-            <div className="relative h-[400px] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/30 shadow-2xl">
+          <div className="relative order-first lg:order-last">
+            <div className="relative h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/30 shadow-2xl">
               <Image
-                src="/placeholder.svg?height=400&width=600"
-                alt="Creative Agency Hero"
+                src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="Creative Agency - Modern workspace with design tools and digital devices"
                 fill
                 className="object-cover"
+                priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
             </div>
             {/* Enhanced floating elements */}
-            <div className="absolute -top-4 -right-4 h-24 w-24 rounded-full bg-primary/20 blur-xl animate-pulse" />
-            <div className="absolute -bottom-4 -left-4 h-32 w-32 rounded-full bg-secondary/30 blur-xl animate-pulse delay-1000" />
-            <div className="absolute top-1/2 -left-8 h-16 w-16 rounded-full bg-primary/10 blur-lg animate-pulse delay-500" />
+            <div className="absolute -top-4 -right-4 h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 rounded-full bg-primary/20 blur-xl animate-pulse" />
+            <div className="absolute -bottom-4 -left-4 h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 rounded-full bg-secondary/30 blur-xl animate-pulse delay-1000" />
+            <div className="absolute top-1/2 -left-4 sm:-left-6 md:-left-8 h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 rounded-full bg-primary/10 blur-lg animate-pulse delay-500" />
           </div>
         </div>
       </div>

@@ -16,14 +16,14 @@ export function Footer() {
 
   return (
     <footer className="border-t bg-background">
-      <div className="container py-12">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          <div className="space-y-4">
+      <div className="container py-8 sm:py-12">
+        <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="space-y-4 sm:col-span-2 lg:col-span-1">
             <div className="flex items-center space-x-2">
               <div className="h-8 w-8 rounded-full bg-primary"></div>
-              <span className="font-bold text-xl">Creative Agency</span>
+              <span className="font-bold text-lg sm:text-xl">ATLAS Agency</span>
             </div>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-sm sm:text-base">
               Creating stunning visual identities and modern websites for businesses worldwide.
             </p>
             <div className="flex space-x-4">
@@ -41,8 +41,8 @@ export function Footer() {
           </div>
 
           <div className="space-y-4">
-            <h3 className="font-semibold">{t.nav.services}</h3>
-            <ul className="space-y-2 text-muted-foreground">
+            <h3 className="font-semibold text-sm sm:text-base">{t.nav.services}</h3>
+            <ul className="space-y-2 text-muted-foreground text-sm sm:text-base">
               <li>
                 <Link href="#services" className="hover:text-primary transition-colors">
                   {t.services.visual.title}
@@ -67,8 +67,8 @@ export function Footer() {
           </div>
 
           <div className="space-y-4">
-            <h3 className="font-semibold">Company</h3>
-            <ul className="space-y-2 text-muted-foreground">
+            <h3 className="font-semibold text-sm sm:text-base">Company</h3>
+            <ul className="space-y-2 text-muted-foreground text-sm sm:text-base">
               <li>
                 <Link href="#about" className="hover:text-primary transition-colors">
                   {t.nav.about}
@@ -93,8 +93,8 @@ export function Footer() {
           </div>
 
           <div className="space-y-4">
-            <h3 className="font-semibold">Support</h3>
-            <ul className="space-y-2 text-muted-foreground">
+            <h3 className="font-semibold text-sm sm:text-base">Support</h3>
+            <ul className="space-y-2 text-muted-foreground text-sm sm:text-base">
               <li>
                 <Link href="#contact" className="hover:text-primary transition-colors">
                   {t.nav.contact}
@@ -119,8 +119,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-          <p>&copy; 2024 Creative Agency. All rights reserved.</p>
+        <div className="border-t mt-6 sm:mt-8 pt-6 sm:pt-8 text-center text-muted-foreground text-sm sm:text-base">
+          <p>&copy; 2024 ATLAS Agency. All rights reserved.</p>
         </div>
       </div>
     </footer>

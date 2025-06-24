@@ -47,18 +47,24 @@ export function ContactSection({ t }: ContactSectionProps) {
   ]
 
   return (
-    <section id="contact" className="py-20 bg-muted/30">
+    <section id="contact" className="py-12 sm:py-16 md:py-20 bg-muted/30">
       <div className="container">
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t.contact.title}</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t.contact.description}</p>
+        <div className="text-center space-y-4 mb-12 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
+            {t.contact.title}
+          </h2>
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+            {t.contact.description}
+          </p>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle>Send us a message</CardTitle>
-              <CardDescription>Fill out the form below and we'll get back to you as soon as possible.</CardDescription>
+              <CardTitle className="text-lg sm:text-xl">Send us a message</CardTitle>
+              <CardDescription className="text-sm sm:text-base">
+                Fill out the form below and we'll get back to you as soon as possible.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               {isSubmitted ? (
@@ -76,6 +82,7 @@ export function ContactSection({ t }: ContactSectionProps) {
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
                     disabled={isSubmitting}
+                    className="text-sm sm:text-base"
                   />
                   <Input
                     type="email"
@@ -84,6 +91,7 @@ export function ContactSection({ t }: ContactSectionProps) {
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     required
                     disabled={isSubmitting}
+                    className="text-sm sm:text-base"
                   />
                   <Textarea
                     placeholder={t.contact.form.message}
@@ -92,8 +100,13 @@ export function ContactSection({ t }: ContactSectionProps) {
                     rows={5}
                     required
                     disabled={isSubmitting}
+                    className="text-sm sm:text-base"
                   />
-                  <Button type="submit" className="w-full bg-primary hover:bg-primary/90" disabled={isSubmitting}>
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-primary hover:bg-primary/90 text-sm sm:text-base" 
+                    disabled={isSubmitting}
+                  >
                     <Send className="mr-2 h-4 w-4" />
                     {isSubmitting ? "Sending..." : t.contact.form.send}
                   </Button>
@@ -105,18 +118,20 @@ export function ContactSection({ t }: ContactSectionProps) {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Get in touch</CardTitle>
-                <CardDescription>We'd love to hear from you. Here's how you can reach us.</CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Get in touch</CardTitle>
+                <CardDescription className="text-sm sm:text-base">
+                  We'd love to hear from you. Here's how you can reach us.
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {contactInfo.map((info, index) => (
                   <div key={index} className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <info.icon className="h-5 w-5 text-primary" />
                     </div>
-                    <div>
-                      <div className="font-medium">{info.label}</div>
-                      <div className="text-muted-foreground">{info.value}</div>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-medium text-sm sm:text-base">{info.label}</div>
+                      <div className="text-muted-foreground text-sm sm:text-base break-words">{info.value}</div>
                     </div>
                   </div>
                 ))}

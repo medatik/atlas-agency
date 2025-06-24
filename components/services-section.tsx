@@ -38,42 +38,42 @@ export function ServicesSection({ t }: ServicesSectionProps) {
   ];
 
   return (
-    <section id="services" className="py-20 bg-muted/30">
+    <section id="services" className="py-12 sm:py-16 md:py-20 bg-muted/30">
       <div className="container">
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+        <div className="text-center space-y-4 mb-12 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
             {t.services.title}
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             {t.services.subtitle}
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => (
             <Card
               key={index}
               className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20 hover:-translate-y-1 bg-card/50 backdrop-blur-sm flex flex-col justify-between shadow-md rounded-lg overflow-hidden transform hover:scale-105"
             >
-              <CardHeader>
-                  <div
-                    className={`w-12 h-12 rounded-lg ${service.bgColor} shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    <service.icon className={`h-6 w-6 ${service.color}`} />
-                  </div>
-                <CardTitle className="text-xl group-hover:text-primary transition-colors duration-300">
+              <CardHeader className="pb-4">
+                <div
+                  className={`w-12 h-12 rounded-lg ${service.bgColor} shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+                >
+                  <service.icon className={`h-6 w-6 ${service.color}`} />
+                </div>
+                <CardTitle className="text-lg sm:text-xl group-hover:text-primary transition-colors duration-300">
                   {service.title}
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base leading-relaxed">
+              <CardContent className="flex-grow">
+                <CardDescription className="text-sm sm:text-base leading-relaxed">
                   {service.description}
                 </CardDescription>
               </CardContent>
-              <div className="p-4">
+              <div className="p-4 sm:p-6 pt-0">
                 <Button
                   variant="outline"
-                  className="w-full flex items-center justify-center gap-2 hover:bg-primary/10 transition-colors duration-300"
+                  className="w-full flex items-center justify-center gap-2 hover:bg-primary/10 transition-colors duration-300 text-sm sm:text-base"
                 >
                   {t.services.buttonText} <MoveRight className="h-4 w-4" />
                 </Button>

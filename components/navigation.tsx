@@ -16,9 +16,9 @@ export function Navigation() {
 
   const navItems = [
     { href: "/", label: t.nav.home },
-    { href: "/#services", label: t.nav.services },
-    { href: "/#about", label: t.nav.about },
-    { href: "/#contact", label: t.nav.contact },
+    { href: "#services", label: t.nav.services },
+    { href: "#about", label: t.nav.about },
+    { href: "#contact", label: t.nav.contact },
     { href: "/components", label: t.nav.components },
   ]
 
@@ -27,21 +27,49 @@ export function Navigation() {
 
     // Handle home navigation
     if (href === "/") {
-      window.scrollTo({ top: 0, behavior: "smooth" })
+      if (window.location.pathname === "/") {
+        window.scrollTo({ top: 0, behavior: "smooth" })
+      } else {
+        window.location.href = "/"
+      }
       return
     }
 
-    // Handle smooth scrolling for anchor links
+    // Handle components page navigation
+    if (href === "/components") {
+      if (window.location.pathname !== "/components") {
+        window.location.href = "/components"
+      }
+      return
+    }
+
+    // Handle smooth scrolling for anchor links on home page
     if (href.startsWith("#")) {
+      // If we're not on the home page, navigate to home first
+      if (window.location.pathname !== "/") {
+        window.location.href = "/" + href
+        return
+      }
+      
+      // We're on the home page, scroll to the section
       const element = document.querySelector(href)
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" })
+        const headerHeight = 80 // Account for fixed header
+        const elementPosition = element.offsetTop - headerHeight
+        window.scrollTo({ 
+          top: elementPosition, 
+          behavior: "smooth" 
+        })
       }
     }
   }
 
   const handleLogoClick = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    if (window.location.pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    } else {
+      window.location.href = "/"
+    }
   }
 
   return (
@@ -51,22 +79,20 @@ export function Navigation() {
           onClick={handleLogoClick}
           className="flex items-center space-x-2 hover:opacity-80 transition-opacity cursor-pointer"
         >
-          <Link href="/">
-            <img src="/icon_red.png" alt="Logo" className="h-8 w-8 rounded-full" />
-          </Link>
+          <img src="/icon_red.png" alt="Logo" className="h-8 w-8 rounded-full" />
+          <span className="font-bold text-xl hidden sm:inline">ATLAS Agency</span>
         </button>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
           {navItems.map((item) => (
-            <Link
+            <button
               key={item.href}
-              href={item.href}
-              className="text-sm font-medium transition-colors hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full"
               onClick={() => handleNavClick(item.href)}
+              className="text-sm font-medium transition-colors hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full nav-link"
             >
               {item.label}
-            </Link>
+            </button>
           ))}
         </div>
 
@@ -102,14 +128,13 @@ export function Navigation() {
         <div className="md:hidden border-t bg-background/95 backdrop-blur">
           <div className="container py-4 space-y-2">
             {navItems.map((item) => (
-              <Link
+              <button
                 key={item.href}
-                href={item.href}
-                className="block py-2 text-sm font-medium transition-colors hover:text-primary hover:bg-primary/5 rounded-md px-2"
                 onClick={() => handleNavClick(item.href)}
+                className="block w-full text-left py-2 text-sm font-medium transition-colors hover:text-primary hover:bg-primary/5 rounded-md px-2"
               >
                 {item.label}
-              </Link>
+              </button>
             ))}
 
             {/* Sign In/Up Buttons - Mobile */}
