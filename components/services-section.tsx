@@ -53,9 +53,9 @@ export function ServicesSection({ t }: ServicesSectionProps) {
           {services.map((service, index) => (
             <Card
               key={index}
-              className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20 hover:-translate-y-1 bg-card/50 backdrop-blur-sm flex flex-col justify-between shadow-md rounded-lg overflow-hidden transform hover:scale-105"
+              className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20 hover:-translate-y-1 bg-card/50 backdrop-blur-sm shadow-md rounded-lg overflow-hidden transform hover:scale-105"
             >
-              <CardHeader className="pb-4">
+              <CardHeader className="pb-4 rtl:flex rtl:justify-between">
                 <div
                   className={`w-12 h-12 rounded-lg ${service.bgColor} shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
                 >
