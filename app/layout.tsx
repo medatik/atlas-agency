@@ -19,11 +19,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params,
 }: {
   children: React.ReactNode
+  params: { lang: string };
 }) {
+  const dir = params.lang === "ar" ? "rtl" : "ltr";
+  const lang = params.lang;
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={lang} dir={dir} suppressHydrationWarning>
       <body className={inter.className}>
         <LanguageProvider>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem={true} disableTransitionOnChange={false}>

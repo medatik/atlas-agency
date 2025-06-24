@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Play } from "lucide-react"
 import Image from "next/image"
@@ -9,14 +10,16 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({ t }: HeroSectionProps) {
+  const [showVideo, setShowVideo] = useState(false)
+
   const scrollToServices = () => {
     const servicesSection = document.getElementById("services")
     if (servicesSection) {
       const headerHeight = 80
       const elementPosition = servicesSection.offsetTop - headerHeight
-      window.scrollTo({ 
-        top: elementPosition, 
-        behavior: "smooth" 
+      window.scrollTo({
+        top: elementPosition,
+        behavior: "smooth",
       })
     }
   }
@@ -50,7 +53,8 @@ export function HeroSection({ t }: HeroSectionProps) {
               <Button
                 variant="outline"
                 size="lg"
-                className="bg-background/80 backdrop-blur-sm text-foreground border-primary/20 hover:bg-background/90 shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto"
+                className="bg-background/80 backdrop-blur-sm text-foreground border-primary/20 hover:bg-primary/10 shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto"
+                onClick={() => setShowVideo(true)}
               >
                 <Play className="mr-2 h-4 w-4" />
                 {t.hero.learnMore}
@@ -69,13 +73,33 @@ export function HeroSection({ t }: HeroSectionProps) {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
             </div>
-            {/* Enhanced floating elements */}
             <div className="absolute -top-4 -right-4 h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 rounded-full bg-primary/20 blur-xl animate-pulse" />
             <div className="absolute -bottom-4 -left-4 h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 rounded-full bg-secondary/30 blur-xl animate-pulse delay-1000" />
             <div className="absolute top-1/2 -left-4 sm:-left-6 md:-left-8 h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 rounded-full bg-primary/10 blur-lg animate-pulse delay-500" />
           </div>
         </div>
       </div>
+
+      {/* Modal for YouTube Video */}
+      {showVideo && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+          <div className="relative w-full max-w-3xl aspect-video">
+            <iframe
+              src="https://www.youtube.com/embed/WO2b03Zdu4Q?autoplay=1"
+              title="YouTube Video"
+              className="w-full h-full rounded-lg"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            <button
+              onClick={() => setShowVideo(false)}
+              className="absolute top-0 right-0 text-white text-2xl bg-black/50 hover:bg-black/70 rounded-full w-10 h-10 flex items-center justify-center"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
