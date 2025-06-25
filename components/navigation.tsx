@@ -84,7 +84,7 @@ export function Navigation() {
         </button>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-6">
+        <div className="hidden md:flex items-center space-x-6 rtl:flex rtl:flex-row-reverse">
           {navItems.map((item) => (
             <button
               key={item.href}

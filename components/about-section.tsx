@@ -31,10 +31,10 @@ export function AboutSection({ t }: AboutSectionProps) {
         <div className="grid gap-12 lg:gap-16 lg:grid-cols-2 items-center">
           <div className="space-y-6 text-center lg:text-left">
             <div className="space-y-4">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight rtl:text-right">
                 {t.about.title}
               </h2>
-              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed rtl:text-right">
                 {t.about.description}
               </p>
             </div>

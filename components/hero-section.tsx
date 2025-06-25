@@ -29,7 +29,7 @@ export function HeroSection({ t }: HeroSectionProps) {
       <div className="container relative">
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-16 items-center">
           <div className="space-y-6 text-center lg:text-left">
-            <div className="space-y-4">
+            <div className="space-y-4 rtl:text-right">
               <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
                 <span className="text-primary">{t.hero.title}</span>
                 <br />
@@ -41,10 +41,10 @@ export function HeroSection({ t }: HeroSectionProps) {
                 {t.hero.description}
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start rtl:justify-end">
               <Button
                 size="lg"
-                className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
+                className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto flex "
                 onClick={scrollToServices}
               >
                 {t.hero.cta}
