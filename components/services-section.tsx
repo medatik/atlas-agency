@@ -53,23 +53,27 @@ export function ServicesSection({ t }: ServicesSectionProps) {
           {services.map((service, index) => (
             <Card
               key={index}
-              className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20 hover:-translate-y-1 bg-card/50 backdrop-blur-sm shadow-md rounded-lg overflow-hidden transform hover:scale-105"
+              className={`group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20 hover:-translate-y-1 
+                  bg-card/50 backdrop-blur-sm shadow-md rounded-lg overflow-hidden transform hover:scale-105`}
             >
-              <CardHeader className="pb-4">
-                <div
-                  className={`w-12 h-12 rounded-lg ${service.bgColor} shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
-                >
-                  <service.icon className={`h-6 w-6 ${service.color}`} />
-                </div>
-                <CardTitle className="text-lg sm:text-xl group-hover:text-primary transition-colors duration-300">
-                  {service.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <CardDescription className="text-sm sm:text-base leading-relaxed">
-                  {service.description}
-                </CardDescription>
-              </CardContent>
+              <div>
+                <CardHeader className="pb-4 rtl:flex rtl:flex-col rtl:justify-between">
+                  <div
+                    className={`w-12 h-12 rounded-lg ${service.bgColor} shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+                  >
+                    <service.icon className={`h-6 w-6 ${service.color}`} />
+                  </div>
+                  <CardTitle className="text-lg sm:text-xl group-hover:text-primary transition-colors duration-300">
+                    {service.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  <CardDescription className="text-sm sm:text-base leading-relaxed">
+                    {service.description}
+                  </CardDescription>
+                </CardContent>
+              </div>
+
               <div className="p-4 sm:p-6 pt-0">
                 <Button
                   variant="outline"
