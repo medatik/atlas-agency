@@ -4,10 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Play } from "lucide-react"
 import Image from "next/image"
-
-interface HeroSectionProps {
-  t: any
-}
+import { HeroSectionProps } from '@/lib/types'
 
 export function HeroSection({ t }: HeroSectionProps) {
   const [showVideo, setShowVideo] = useState(false)
@@ -44,19 +41,21 @@ export function HeroSection({ t }: HeroSectionProps) {
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start rtl:justify-end">
               <Button
                 size="lg"
-                className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto flex "
+                className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto flex focus:ring-2 focus:ring-primary focus:ring-offset-2"
                 onClick={scrollToServices}
+                aria-label="Get started with our services"
               >
                 {t.hero.cta}
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
               </Button>
               <Button
                 variant="outline"
                 size="lg"
-                className="bg-background/80 backdrop-blur-sm text-foreground border-primary/20 hover:bg-primary/10 shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto"
+                className="bg-background/80 backdrop-blur-sm text-foreground border-primary/20 hover:bg-primary/10 shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto focus:ring-2 focus:ring-primary focus:ring-offset-2"
                 onClick={() => setShowVideo(true)}
+                aria-label="Watch our introduction video"
               >
-                <Play className="mr-2 h-4 w-4" />
+                <Play className="mr-2 h-4 w-4" aria-hidden="true" />
                 {t.hero.learnMore}
               </Button>
             </div>
@@ -73,27 +72,34 @@ export function HeroSection({ t }: HeroSectionProps) {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
             </div>
-            <div className="absolute -top-4 -right-4 h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 rounded-full bg-primary/20 blur-xl animate-pulse" />
-            <div className="absolute -bottom-4 -left-4 h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 rounded-full bg-secondary/30 blur-xl animate-pulse delay-1000" />
-            <div className="absolute top-1/2 -left-4 sm:-left-6 md:-left-8 h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 rounded-full bg-primary/10 blur-lg animate-pulse delay-500" />
+            <div className="absolute -top-4 -right-4 h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 rounded-full bg-primary/20 blur-xl animate-pulse" aria-hidden="true" />
+            <div className="absolute -bottom-4 -left-4 h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 rounded-full bg-secondary/30 blur-xl animate-pulse delay-1000" aria-hidden="true" />
+            <div className="absolute top-1/2 -left-4 sm:-left-6 md:-left-8 h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 rounded-full bg-primary/10 blur-lg animate-pulse delay-500" aria-hidden="true" />
           </div>
         </div>
       </div>
 
       {/* Modal for YouTube Video */}
       {showVideo && (
-        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+        <div 
+          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="video-title"
+        >
           <div className="relative w-full max-w-3xl aspect-video">
+            <h2 id="video-title" className="sr-only">Introduction Video</h2>
             <iframe
               src="https://www.youtube.com/embed/WO2b03Zdu4Q?autoplay=1"
-              title="YouTube Video"
+              title="Creative Agency Introduction Video"
               className="w-full h-full rounded-lg"
               allow="autoplay; encrypted-media; picture-in-picture"
               allowFullScreen
             ></iframe>
             <button
               onClick={() => setShowVideo(false)}
-              className="absolute top-0 right-0 text-white text-2xl bg-black/50 hover:bg-black/70 rounded-full w-10 h-10 flex items-center justify-center"
+              className="absolute top-0 right-0 text-white text-2xl bg-black/50 hover:bg-black/70 rounded-full w-10 h-10 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white"
+              aria-label="Close video"
             >
               ×
             </button>

@@ -1,7 +1,9 @@
-export const locales = ["en", "fr", "ar"] as const
-export type Locale = (typeof locales)[number]
+import { Translation } from './types';
 
-export const translations = {
+export const locales = ["en", "fr", "ar"] as const;
+export type Locale = (typeof locales)[number];
+
+export const translations: Record<Locale, Translation> = {
   en: {
     nav: {
       home: "Home",
@@ -398,8 +400,8 @@ export const translations = {
       },
     },
   },
-}
+};
 
-export function getTranslation(locale: Locale) {
-  return translations[locale] || translations.en
+export function getTranslation(locale: Locale): Translation {
+  return translations[locale] || translations.en;
 }

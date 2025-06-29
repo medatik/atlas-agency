@@ -1,10 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Users, Award, Clock, Heart } from "lucide-react"
-
-interface AboutSectionProps {
-  t: any
-}
+import { AboutSectionProps } from '@/lib/types'
 
 export function AboutSection({ t }: AboutSectionProps) {
   const stats = [
@@ -39,9 +36,14 @@ export function AboutSection({ t }: AboutSectionProps) {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+            <div className="flex flex-wrap gap-2 justify-center lg:justify-start" role="list" aria-label="Our skills">
               {skills.map((skill) => (
-                <Badge key={skill} variant="secondary" className="px-3 py-1 text-xs sm:text-sm">
+                <Badge 
+                  key={skill} 
+                  variant="secondary" 
+                  className="px-3 py-1 text-xs sm:text-sm"
+                  role="listitem"
+                >
                   {skill}
                 </Badge>
               ))}
@@ -50,12 +52,17 @@ export function AboutSection({ t }: AboutSectionProps) {
 
           <div className="grid grid-cols-2 gap-4 sm:gap-6">
             {stats.map((stat, index) => (
-              <Card key={index} className="text-center p-4 sm:p-6 hover:shadow-md transition-shadow">
+              <Card 
+                key={index} 
+                className="text-center p-4 sm:p-6 hover:shadow-md transition-shadow focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2"
+              >
                 <CardContent className="space-y-2 p-0">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                    <stat.icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+                    <stat.icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" aria-hidden="true" />
                   </div>
-                  <div className="text-xl sm:text-2xl font-bold text-primary">{stat.value}</div>
+                  <div className="text-xl sm:text-2xl font-bold text-primary" aria-label={`${stat.value} ${stat.label}`}>
+                    {stat.value}
+                  </div>
                   <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
                 </CardContent>
               </Card>

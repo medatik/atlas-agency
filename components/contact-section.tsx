@@ -7,37 +7,82 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react"
-
-interface ContactSectionProps {
-  t: any
-}
+import { Mail, Phone, MapPin, Send, CheckCircle, Loader2 } from "lucide-react"
+import { ContactSectionProps, ContactFormData } from '@/lib/types'
+import { validateEmail, sanitizeInput } from '@/lib/validation'
 
 export function ContactSection({ t }: ContactSectionProps) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
     message: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [errors, setErrors] = useState<Record<string, string>>({})
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {}
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required"
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = "Name must be at least 2 characters"
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required"
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = "Please enter a valid email address"
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required"
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "Message must be at least 10 characters"
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const handleInputChange = (field: keyof ContactFormData, value: string) => {
+    const sanitizedValue = sanitizeInput(value)
+    setFormData(prev => ({ ...prev, [field]: sanitizedValue }))
+    
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: "" }))
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!validateForm()) {
+      return
+    }
+
     setIsSubmitting(true)
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    try {
+      // Simulate form submission
+      await new Promise((resolve) => setTimeout(resolve, 1500))
 
-    console.log("Form submitted:", formData)
-    setIsSubmitted(true)
-    setIsSubmitting(false)
+      console.log("Form submitted:", formData)
+      setIsSubmitted(true)
+      setIsSubmitting(false)
 
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setFormData({ name: "", email: "", message: "" })
-      setIsSubmitted(false)
-    }, 3000)
+      // Reset form after 3 seconds
+      setTimeout(() => {
+        setFormData({ name: "", email: "", message: "" })
+        setIsSubmitted(false)
+        setErrors({})
+      }, 3000)
+    } catch (error) {
+      setIsSubmitting(false)
+      setErrors({ submit: "Failed to send message. Please try again." })
+    }
   }
 
   const contactInfo = [
@@ -75,40 +120,88 @@ export function ContactSection({ t }: ContactSectionProps) {
                   </AlertDescription>
                 </Alert>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <Input
-                    placeholder={t.contact.form.name}
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    required
-                    disabled={isSubmitting}
-                    className="text-sm sm:text-base"
-                  />
-                  <Input
-                    type="email"
-                    placeholder={t.contact.form.email}
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                    disabled={isSubmitting}
-                    className="text-sm sm:text-base"
-                  />
-                  <Textarea
-                    placeholder={t.contact.form.message}
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    rows={5}
-                    required
-                    disabled={isSubmitting}
-                    className="text-sm sm:text-base"
-                  />
+                <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                  <div>
+                    <Input
+                      placeholder={t.contact.form.name}
+                      value={formData.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      required
+                      disabled={isSubmitting}
+                      className={`text-sm sm:text-base ${errors.name ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                      aria-describedby={errors.name ? "name-error" : undefined}
+                      maxLength={50}
+                    />
+                    {errors.name && (
+                      <p id="name-error" className="text-sm text-destructive mt-1" role="alert">
+                        {errors.name}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Input
+                      type="email"
+                      placeholder={t.contact.form.email}
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      required
+                      disabled={isSubmitting}
+                      className={`text-sm sm:text-base ${errors.email ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                      aria-describedby={errors.email ? "email-error" : undefined}
+                      maxLength={100}
+                    />
+                    {errors.email && (
+                      <p id="email-error" className="text-sm text-destructive mt-1" role="alert">
+                        {errors.email}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Textarea
+                      placeholder={t.contact.form.message}
+                      value={formData.message}
+                      onChange={(e) => handleInputChange('message', e.target.value)}
+                      rows={5}
+                      required
+                      disabled={isSubmitting}
+                      className={`text-sm sm:text-base ${errors.message ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                      aria-describedby={errors.message ? "message-error" : undefined}
+                      maxLength={1000}
+                    />
+                    {errors.message && (
+                      <p id="message-error" className="text-sm text-destructive mt-1" role="alert">
+                        {errors.message}
+                      </p>
+                    )}
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {formData.message.length}/1000 characters
+                    </p>
+                  </div>
+
+                  {errors.submit && (
+                    <p className="text-sm text-destructive" role="alert">
+                      {errors.submit}
+                    </p>
+                  )}
+
                   <Button 
                     type="submit" 
-                    className="w-full bg-primary hover:bg-primary/90 text-sm sm:text-base" 
+                    className="w-full bg-primary hover:bg-primary/90 text-sm sm:text-base focus:ring-2 focus:ring-primary focus:ring-offset-2" 
                     disabled={isSubmitting}
                   >
-                    <Send className="mr-2 h-4 w-4" />
-                    {isSubmitting ? "Sending..." : t.contact.form.send}
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="mr-2 h-4 w-4" />
+                        {t.contact.form.send}
+                      </>
+                    )}
                   </Button>
                 </form>
               )}
@@ -127,7 +220,7 @@ export function ContactSection({ t }: ContactSectionProps) {
                 {contactInfo.map((info, index) => (
                   <div key={index} className="flex items-center space-x-3">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <info.icon className="h-5 w-5 text-primary" />
+                      <info.icon className="h-5 w-5 text-primary" aria-hidden="true" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="font-medium text-sm sm:text-base">{info.label}</div>

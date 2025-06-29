@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -13,6 +13,7 @@ import { useLanguage } from "@/hooks/use-language"
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const { t, locale } = useLanguage()
+  const menuRef = useRef<HTMLDivElement>(null)
 
   const navItems = [
     { href: "/", label: t.nav.home },
@@ -21,6 +22,26 @@ export function Navigation() {
     { href: "#contact", label: t.nav.contact },
     { href: "/components", label: t.nav.components },
   ]
+
+  // Focus management for mobile menu
+  useEffect(() => {
+    if (isOpen && menuRef.current) {
+      const firstFocusable = menuRef.current.querySelector('button, a') as HTMLElement
+      firstFocusable?.focus()
+    }
+  }, [isOpen])
+
+  // Close menu on escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [isOpen])
 
   const handleNavClick = (href: string) => {
     setIsOpen(false)
@@ -73,13 +94,18 @@ export function Navigation() {
   }
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
+    <nav 
+      className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm"
+      role="navigation"
+      aria-label="Main navigation"
+    >
       <div className="container flex h-16 items-center justify-between">
         <button
           onClick={handleLogoClick}
-          className="flex items-center space-x-2 hover:opacity-80 transition-opacity cursor-pointer rtl:space-x-reverse"
+          className="flex items-center space-x-2 hover:opacity-80 transition-opacity cursor-pointer rtl:space-x-reverse focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md px-2 py-1"
+          aria-label="Go to homepage"
         >
-          <img src="/icon_red.png" alt="Logo" className="h-8 w-8 rounded-full" />
+          <img src="/icon_red.png" alt="ATLAS Agency Logo" className="h-8 w-8 rounded-full" />
           <span className="font-bold text-xl hidden sm:inline">ATLAS Agency</span>
         </button>
 
@@ -89,7 +115,8 @@ export function Navigation() {
             <button
               key={item.href}
               onClick={() => handleNavClick(item.href)}
-              className="text-sm font-medium transition-colors hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full nav-link"
+              className="text-sm font-medium transition-colors hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full nav-link focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md px-2 py-1"
+              aria-label={`Navigate to ${item.label}`}
             >
               {item.label}
             </button>
@@ -100,14 +127,14 @@ export function Navigation() {
           {/* Sign In/Up Buttons - Desktop */}
           <div className="hidden md:flex items-center space-x-2 mr-2 rtl:space-x-reverse rtl:ml-2 rtl:mr-0">
             <SignInDialog>
-              <Button variant="ghost" size="sm" className="text-sm">
-                <LogIn className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
+              <Button variant="ghost" size="sm" className="text-sm focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                <LogIn className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" aria-hidden="true" />
                 Sign In
               </Button>
             </SignInDialog>
             <SignUpDialog>
-              <Button size="sm" className="bg-primary hover:bg-primary/90 text-sm">
-                <UserPlus className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
+              <Button size="sm" className="bg-primary hover:bg-primary/90 text-sm focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                <UserPlus className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" aria-hidden="true" />
                 Sign Up
               </Button>
             </SignUpDialog>
@@ -117,23 +144,39 @@ export function Navigation() {
           <ThemeToggle />
 
           {/* Mobile menu button */}
-          <Button variant="ghost" size="sm" className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="md:hidden focus:ring-2 focus:ring-primary focus:ring-offset-2" 
+            onClick={() => setIsOpen(!isOpen)}
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+          >
+            {isOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
           </Button>
         </div>
       </div>
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden border-t bg-background/95 backdrop-blur">
+        <div 
+          id="mobile-menu"
+          ref={menuRef}
+          className="md:hidden border-t bg-background/95 backdrop-blur"
+          role="menu"
+          aria-label="Mobile navigation menu"
+        >
           <div className="container py-4 space-y-2">
             {navItems.map((item) => (
               <button
                 key={item.href}
                 onClick={() => handleNavClick(item.href)}
-                className={`block w-full text-left py-2 text-sm font-medium transition-colors hover:text-primary hover:bg-primary/5 rounded-md px-2 ${
+                className={`block w-full text-left py-2 text-sm font-medium transition-colors hover:text-primary hover:bg-primary/5 rounded-md px-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                   locale === 'ar' ? 'text-right' : 'text-left'
                 }`}
+                role="menuitem"
+                aria-label={`Navigate to ${item.label}`}
               >
                 {item.label}
               </button>
@@ -142,14 +185,21 @@ export function Navigation() {
             {/* Sign In/Up Buttons - Mobile */}
             <div className="pt-4 border-t space-y-2">
               <SignInDialog>
-                <Button variant="ghost" size="sm" className="w-full justify-start rtl:justify-end">
-                  <LogIn className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="w-full justify-start rtl:justify-end focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                >
+                  <LogIn className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" aria-hidden="true" />
                   Sign In
                 </Button>
               </SignInDialog>
               <SignUpDialog>
-                <Button size="sm" className="w-full bg-primary hover:bg-primary/90">
-                  <UserPlus className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
+                <Button 
+                  size="sm" 
+                  className="w-full bg-primary hover:bg-primary/90 focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                >
+                  <UserPlus className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" aria-hidden="true" />
                   Sign Up
                 </Button>
               </SignUpDialog>
