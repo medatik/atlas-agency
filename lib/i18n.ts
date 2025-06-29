@@ -74,6 +74,7 @@ export const translations = {
         title: "LET'S START BY THE LOGO",
         subtitle: "CHOOSE WHAT TYPE OF LOGO YOU WANT",
         helpText: "CAN'T DECIDE? LET ATLAS AI HELP YOU",
+        helpPlaceholder: "Tell us about your brand style, industry, or any preferences you have...",
       },
       logoTypes: {
         wordmark: "Wordmark",
@@ -91,6 +92,7 @@ export const translations = {
         secondaryColors: "SECONDARY COLORS", 
         secondaryColorsDesc: "Supporting colors for accents and variety",
         helpText: "CAN'T DECIDE? LET ATLAS AI HELP YOU",
+        colorPickerText: "Select colors that represent your brand's personality and values",
       },
       step4: {
         title: "TYPOGRAPHY",
@@ -101,15 +103,32 @@ export const translations = {
         additionalRequests: "ANYTHING YOU WANNA ADD? JUST TELL US",
         additionalRequestsPlaceholder: "Any additional requirements, preferences, or special requests...",
       },
-      typography: {
-        serif: "Serif (Traditional, elegant)",
-        sansSerif: "Sans-serif (Modern, clean)",
-        script: "Script (Handwritten, personal)",
-        display: "Display (Bold, attention-grabbing)",
-        custom: "I have a specific font in mind",
+      fontOptions: {
+        specific: "I have a specific font in mind",
+        help: "We can get you the perfect font",
+      },
+      step5: {
+        title: "PROJECT PREFERENCES",
+        subtitle: "Let us know your timeline and communication preferences",
+        timelineTitle: "Project Timeline",
+        communicationTitle: "Preferred Communication Method",
+        timeline: {
+          rush: "Rush (1-2 weeks) - Additional fees may apply",
+          standard: "Standard (3-4 weeks) - Recommended timeline",
+          flexible: "Flexible (4+ weeks) - No rush, take your time",
+        },
+        communication: {
+          email: "Email updates and communication",
+          phone: "Phone calls for important updates",
+          video: "Video calls for reviews and feedback",
+        },
       },
       summary: {
         title: "Project Summary",
+        subtitle: "Thank you for providing all the details! Here's a summary of your project.",
+        projectDetails: "Project Details",
+        nextSteps: "We'll review your requirements and get back to you within 24 hours with a detailed proposal.",
+        editProject: "Edit Project",
         optionsSelected: "options selected",
       },
     },
@@ -189,6 +208,7 @@ export const translations = {
         title: "COMMENÇONS PAR LE LOGO",
         subtitle: "CHOISISSEZ LE TYPE DE LOGO QUE VOUS VOULEZ",
         helpText: "VOUS N'ARRIVEZ PAS À DÉCIDER ? LAISSEZ ATLAS AI VOUS AIDER",
+        helpPlaceholder: "Parlez-nous du style de votre marque, de votre secteur ou de vos préférences...",
       },
       logoTypes: {
         wordmark: "Logo-type",
@@ -206,6 +226,7 @@ export const translations = {
         secondaryColors: "COULEURS SECONDAIRES",
         secondaryColorsDesc: "Couleurs de support pour les accents et la variété",
         helpText: "VOUS N'ARRIVEZ PAS À DÉCIDER ? LAISSEZ ATLAS AI VOUS AIDER",
+        colorPickerText: "Sélectionnez des couleurs qui représentent la personnalité et les valeurs de votre marque",
       },
       step4: {
         title: "TYPOGRAPHIE",
@@ -216,15 +237,32 @@ export const translations = {
         additionalRequests: "QUELQUE CHOSE À AJOUTER ? DITES-NOUS SIMPLEMENT",
         additionalRequestsPlaceholder: "Toute exigence supplémentaire, préférences ou demandes spéciales...",
       },
-      typography: {
-        serif: "Serif (Traditionnel, élégant)",
-        sansSerif: "Sans-serif (Moderne, épuré)",
-        script: "Script (Manuscrit, personnel)",
-        display: "Display (Gras, accrocheur)",
-        custom: "J'ai une police spécifique en tête",
+      fontOptions: {
+        specific: "J'ai une police spécifique en tête",
+        help: "Nous pouvons vous trouver la police parfaite",
+      },
+      step5: {
+        title: "PRÉFÉRENCES DU PROJET",
+        subtitle: "Faites-nous connaître vos délais et préférences de communication",
+        timelineTitle: "Délai du Projet",
+        communicationTitle: "Méthode de Communication Préférée",
+        timeline: {
+          rush: "Urgent (1-2 semaines) - Des frais supplémentaires peuvent s'appliquer",
+          standard: "Standard (3-4 semaines) - Délai recommandé",
+          flexible: "Flexible (4+ semaines) - Pas de précipitation, prenez votre temps",
+        },
+        communication: {
+          email: "Mises à jour et communication par email",
+          phone: "Appels téléphoniques pour les mises à jour importantes",
+          video: "Appels vidéo pour les révisions et commentaires",
+        },
       },
       summary: {
         title: "Résumé du Projet",
+        subtitle: "Merci d'avoir fourni tous les détails ! Voici un résumé de votre projet.",
+        projectDetails: "Détails du Projet",
+        nextSteps: "Nous examinerons vos exigences et vous recontacterons dans les 24 heures avec une proposition détaillée.",
+        editProject: "Modifier le Projet",
         optionsSelected: "options sélectionnées",
       },
     },
@@ -301,6 +339,7 @@ export const translations = {
         title: "لنبدأ بالشعار",
         subtitle: "اختر نوع الشعار الذي تريده",
         helpText: "لا تستطيع أن تقرر؟ دع أطلس الذكي يساعدك",
+        helpPlaceholder: "أخبرنا عن أسلوب علامتك التجارية أو صناعتك أو أي تفضيلات لديك...",
       },
       logoTypes: {
         wordmark: "شعار نصي",
@@ -318,6 +357,7 @@ export const translations = {
         secondaryColors: "الألوان الثانوية",
         secondaryColorsDesc: "ألوان داعمة للتأكيدات والتنوع",
         helpText: "لا تستطيع أن تقرر؟ دع أطلس الذكي يساعدك",
+        colorPickerText: "اختر الألوان التي تمثل شخصية وقيم علامتك التجارية",
       },
       step4: {
         title: "الطباعة",
@@ -328,15 +368,32 @@ export const translations = {
         additionalRequests: "أي شيء تريد إضافته؟ فقط أخبرنا",
         additionalRequestsPlaceholder: "أي متطلبات إضافية أو تفضيلات أو طلبات خاصة...",
       },
-      typography: {
-        serif: "سيريف (تقليدي، أنيق)",
-        sansSerif: "سان سيريف (حديث، نظيف)",
-        script: "خط يدوي (شخصي)",
-        display: "خط عرض (جريء، لافت)",
-        custom: "لدي خط معين في ذهني",
+      fontOptions: {
+        specific: "لدي خط معين في ذهني",
+        help: "يمكننا أن نجد لك الخط المثالي",
+      },
+      step5: {
+        title: "تفضيلات المشروع",
+        subtitle: "أخبرنا عن الجدول الزمني وتفضيلات التواصل",
+        timelineTitle: "الجدول الزمني للمشروع",
+        communicationTitle: "طريقة التواصل المفضلة",
+        timeline: {
+          rush: "عاجل (1-2 أسابيع) - قد تطبق رسوم إضافية",
+          standard: "عادي (3-4 أسابيع) - الجدول الزمني الموصى به",
+          flexible: "مرن (4+ أسابيع) - لا عجلة، خذ وقتك",
+        },
+        communication: {
+          email: "التحديثات والتواصل عبر البريد الإلكتروني",
+          phone: "المكالمات الهاتفية للتحديثات المهمة",
+          video: "مكالمات الفيديو للمراجعات والتعليقات",
+        },
       },
       summary: {
         title: "ملخص المشروع",
+        subtitle: "شكراً لك على تقديم جميع التفاصيل! إليك ملخص مشروعك.",
+        projectDetails: "تفاصيل المشروع",
+        nextSteps: "سنراجع متطلباتك ونعود إليك خلال 24 ساعة بعرض مفصل.",
+        editProject: "تعديل المشروع",
         optionsSelected: "خيارات مختارة",
       },
     },
