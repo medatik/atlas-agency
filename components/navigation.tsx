@@ -12,7 +12,7 @@ import { useLanguage } from "@/hooks/use-language"
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
-  const { t } = useLanguage()
+  const { t, locale } = useLanguage()
 
   const navItems = [
     { href: "/", label: t.nav.home },
@@ -77,14 +77,14 @@ export function Navigation() {
       <div className="container flex h-16 items-center justify-between">
         <button
           onClick={handleLogoClick}
-          className="flex items-center space-x-2 hover:opacity-80 transition-opacity cursor-pointer"
+          className="flex items-center space-x-2 hover:opacity-80 transition-opacity cursor-pointer rtl:space-x-reverse"
         >
           <img src="/icon_red.png" alt="Logo" className="h-8 w-8 rounded-full" />
           <span className="font-bold text-xl hidden sm:inline">ATLAS Agency</span>
         </button>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-6 rtl:flex rtl:flex-row-reverse">
+        <div className={`hidden md:flex items-center space-x-6 ${locale === 'ar' ? 'rtl:space-x-reverse' : ''}`}>
           {navItems.map((item) => (
             <button
               key={item.href}
@@ -96,18 +96,18 @@ export function Navigation() {
           ))}
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 rtl:space-x-reverse">
           {/* Sign In/Up Buttons - Desktop */}
-          <div className="hidden md:flex items-center space-x-2 mr-2">
+          <div className="hidden md:flex items-center space-x-2 mr-2 rtl:space-x-reverse rtl:ml-2 rtl:mr-0">
             <SignInDialog>
               <Button variant="ghost" size="sm" className="text-sm">
-                <LogIn className="mr-2 h-4 w-4" />
+                <LogIn className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
                 Sign In
               </Button>
             </SignInDialog>
             <SignUpDialog>
               <Button size="sm" className="bg-primary hover:bg-primary/90 text-sm">
-                <UserPlus className="mr-2 h-4 w-4" />
+                <UserPlus className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
                 Sign Up
               </Button>
             </SignUpDialog>
@@ -131,7 +131,9 @@ export function Navigation() {
               <button
                 key={item.href}
                 onClick={() => handleNavClick(item.href)}
-                className="block w-full text-left py-2 text-sm font-medium transition-colors hover:text-primary hover:bg-primary/5 rounded-md px-2"
+                className={`block w-full text-left py-2 text-sm font-medium transition-colors hover:text-primary hover:bg-primary/5 rounded-md px-2 ${
+                  locale === 'ar' ? 'text-right' : 'text-left'
+                }`}
               >
                 {item.label}
               </button>
@@ -140,14 +142,14 @@ export function Navigation() {
             {/* Sign In/Up Buttons - Mobile */}
             <div className="pt-4 border-t space-y-2">
               <SignInDialog>
-                <Button variant="ghost" size="sm" className="w-full justify-start">
-                  <LogIn className="mr-2 h-4 w-4" />
+                <Button variant="ghost" size="sm" className="w-full justify-start rtl:justify-end">
+                  <LogIn className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
                   Sign In
                 </Button>
               </SignInDialog>
               <SignUpDialog>
                 <Button size="sm" className="w-full bg-primary hover:bg-primary/90">
-                  <UserPlus className="mr-2 h-4 w-4" />
+                  <UserPlus className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
                   Sign Up
                 </Button>
               </SignUpDialog>
