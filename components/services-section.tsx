@@ -9,8 +9,12 @@ import { Palette, Code, Package, MoveRight } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { ServicesSectionProps } from '@/lib/types';
+import { useLanguage } from "@/hooks/use-language";
 
 export function ServicesSection({ t }: ServicesSectionProps) {
+  const { locale } = useLanguage();
+  const isRTL = locale === 'ar';
+
   const services = [
     {
       icon: Palette,
@@ -55,22 +59,29 @@ export function ServicesSection({ t }: ServicesSectionProps) {
             <Card
               key={index}
               className={`group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20 hover:-translate-y-1 
-                  bg-card/50 backdrop-blur-sm shadow-md rounded-lg overflow-hidden transform hover:scale-105 flex flex-col h-full focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2`}
+                  bg-card/50 backdrop-blur-sm shadow-md rounded-lg overflow-hidden transform hover:scale-105 flex flex-col h-full focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2
+                  ${isRTL ? 'text-right' : 'text-left'}`}
             >
               <div className="flex-1">
-                <CardHeader className="pb-4 rtl:flex rtl:flex-col rtl:justify-between">
+                <CardHeader className={`pb-4 ${isRTL ? 'items-end' : 'items-start'}`}>
                   <div
-                    className={`w-12 h-12 rounded-lg ${service.bgColor} shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+                    className={`w-12 h-12 rounded-lg ${service.bgColor} shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 ${
+                      isRTL ? 'ml-auto' : 'mr-auto'
+                    }`}
                     aria-hidden="true"
                   >
                     <service.icon className={`h-6 w-6 ${service.color}`} />
                   </div>
-                  <CardTitle className="text-lg sm:text-xl group-hover:text-primary transition-colors duration-300">
+                  <CardTitle className={`text-lg sm:text-xl group-hover:text-primary transition-colors duration-300 ${
+                    isRTL ? 'text-right font-bold leading-relaxed' : 'text-left'
+                  }`}>
                     {service.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="flex-grow">
-                  <CardDescription className="text-sm sm:text-base leading-relaxed">
+                  <CardDescription className={`text-sm sm:text-base leading-relaxed ${
+                    isRTL ? 'text-right font-medium text-muted-foreground/90 leading-loose' : 'text-left'
+                  }`}>
                     {service.description}
                   </CardDescription>
                 </CardContent>
@@ -80,10 +91,12 @@ export function ServicesSection({ t }: ServicesSectionProps) {
                 <Link href={service.href} aria-label={`Learn more about ${service.title}`}>
                   <Button
                     variant="outline"
-                    className="w-full flex items-center justify-center gap-2 hover:bg-primary/10 transition-colors duration-300 text-sm sm:text-base rtl:flex-row-reverse focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                    className={`w-full flex items-center justify-center gap-2 hover:bg-primary/10 transition-colors duration-300 text-sm sm:text-base focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                      isRTL ? 'flex-row-reverse font-medium' : ''
+                    }`}
                   >
                     <span>{t.services.buttonText}</span>
-                    <MoveRight className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
+                    <MoveRight className={`h-4 w-4 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />
                   </Button>
                 </Link>
               </div>

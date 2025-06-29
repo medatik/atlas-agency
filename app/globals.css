@@ -73,6 +73,67 @@
   left: 2rem;
 }
 
+/* Arabic-specific typography improvements */
+[dir="rtl"] .card-title-ar {
+  font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+[dir="rtl"] .card-description-ar {
+  font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.7;
+  color: hsl(var(--muted-foreground));
+}
+
+[dir="rtl"] .card-button-ar {
+  font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Enhanced card styling for Arabic */
+[dir="rtl"] .service-card {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+[dir="rtl"] .service-card:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(-4px) scale(1.02);
+}
+
+/* Improved spacing for Arabic text */
+[dir="rtl"] .service-card .card-content {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+[dir="rtl"] .service-card .card-icon {
+  margin-bottom: 1rem;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/* Better button styling for Arabic */
+[dir="rtl"] .service-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+[dir="rtl"] .service-button:hover {
+  background-color: hsl(var(--primary) / 0.1);
+  border-color: hsl(var(--primary));
+  transform: translateY(-1px);
+}
+
 /* Smooth transitions for theme switching */
 * {
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
@@ -148,4 +209,52 @@ html:not(.dark) .border {
 
 .nav-link:hover::after {
   width: 100%;
+}
+
+/* RTL navigation link adjustments */
+[dir="rtl"] .nav-link::after {
+  left: auto;
+  right: 0;
+}
+
+/* Enhanced Arabic font rendering */
+[dir="rtl"] {
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Improved card layout for Arabic content */
+[dir="rtl"] .service-card-header {
+  text-align: right;
+  padding-bottom: 1rem;
+}
+
+[dir="rtl"] .service-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+  color: hsl(var(--foreground));
+}
+
+[dir="rtl"] .service-card-description {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: hsl(var(--muted-foreground));
+  font-weight: 500;
+}
+
+/* Better spacing for Arabic cards */
+[dir="rtl"] .service-card-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+[dir="rtl"] .service-card-footer {
+  margin-top: auto;
+  padding-top: 1rem;
 }
