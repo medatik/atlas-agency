@@ -5,7 +5,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import { Star, Calendar, MessageSquare } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Star, Calendar, MessageSquare, X } from "lucide-react";
 import { FormData, FormErrors, Translation, TimelineOption, CommunicationOption } from '@/lib/types';
 
 interface StepFiveProps {
@@ -28,6 +29,14 @@ export function StepFive({ t, formData, setFormData, errors }: StepFiveProps) {
     { id: "video", label: t.visualIdentity.step5.communication.video },
   ];
 
+  const handleCancelTimeline = () => {
+    setFormData(prev => ({ ...prev, projectTimeline: "" }));
+  };
+
+  const handleCancelCommunication = () => {
+    setFormData(prev => ({ ...prev, communicationPreference: "" }));
+  };
+
   return (
     <div className="space-y-6">
       <div className="text-center space-y-4">
@@ -44,14 +53,27 @@ export function StepFive({ t, formData, setFormData, errors }: StepFiveProps) {
 
       <div className="space-y-6 max-w-2xl mx-auto">
         <div>
-          <Label className="text-base font-semibold flex items-center gap-2">
-            <Calendar className="h-4 w-4" aria-hidden="true" />
-            {t.visualIdentity.step5.timelineTitle}
-          </Label>
+          <div className="flex items-center justify-between mb-4">
+            <Label className="text-base font-semibold flex items-center gap-2">
+              <Calendar className="h-4 w-4" aria-hidden="true" />
+              {t.visualIdentity.step5.timelineTitle}
+            </Label>
+            {formData.projectTimeline && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleCancelTimeline}
+                className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
+                aria-label="Cancel timeline selection"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
           <RadioGroup
             value={formData.projectTimeline}
             onValueChange={(value) => setFormData(prev => ({ ...prev, projectTimeline: value }))}
-            className="mt-4 space-y-3"
+            className="space-y-3"
             aria-describedby={errors.projectTimeline ? "projectTimeline-error" : undefined}
           >
             {timelineOptions.map((option) => (
@@ -93,14 +115,27 @@ export function StepFive({ t, formData, setFormData, errors }: StepFiveProps) {
         <Separator />
 
         <div>
-          <Label className="text-base font-semibold flex items-center gap-2">
-            <MessageSquare className="h-4 w-4" aria-hidden="true" />
-            {t.visualIdentity.step5.communicationTitle}
-          </Label>
+          <div className="flex items-center justify-between mb-4">
+            <Label className="text-base font-semibold flex items-center gap-2">
+              <MessageSquare className="h-4 w-4" aria-hidden="true" />
+              {t.visualIdentity.step5.communicationTitle}
+            </Label>
+            {formData.communicationPreference && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleCancelCommunication}
+                className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
+                aria-label="Cancel communication selection"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
           <RadioGroup
             value={formData.communicationPreference}
             onValueChange={(value) => setFormData(prev => ({ ...prev, communicationPreference: value }))}
-            className="mt-4 space-y-3"
+            className="space-y-3"
             aria-describedby={errors.communicationPreference ? "communicationPreference-error" : undefined}
           >
             {communicationOptions.map((option) => (

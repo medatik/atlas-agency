@@ -81,6 +81,14 @@ export function StepThree({
     }
   };
 
+  const handleCancelColorsHelp = () => {
+    setShowColorsHelp(false);
+    setFormData(prev => ({
+      ...prev,
+      colorsCantDecideHelp: ""
+    }));
+  };
+
   const handleHelpTextChange = (value: string) => {
     const sanitizedValue = sanitizeInput(value);
     setFormData(prev => ({ ...prev, colorsCantDecideHelp: sanitizedValue }));
@@ -178,7 +186,7 @@ export function StepThree({
                         size="sm"
                         variant="ghost"
                         onClick={() => removeColor(color, 'primary')}
-                        className="h-6 w-6 p-0 flex-shrink-0"
+                        className="h-6 w-6 p-0 flex-shrink-0 hover:bg-red-100 hover:text-red-600"
                         aria-label={`Remove primary color ${color}`}
                       >
                         <X className="h-3 w-3" />
@@ -228,7 +236,7 @@ export function StepThree({
                         size="sm"
                         variant="ghost"
                         onClick={() => removeColor(color, 'secondary')}
-                        className="h-6 w-6 p-0 flex-shrink-0"
+                        className="h-6 w-6 p-0 flex-shrink-0 hover:bg-red-100 hover:text-red-600"
                         aria-label={`Remove secondary color ${color}`}
                       >
                         <X className="h-3 w-3" />
@@ -280,17 +288,31 @@ export function StepThree({
         )}
 
         <div className="text-center">
-          <Button
-            variant="outline"
-            onClick={handleColorsCantDecide}
-            className={`flex items-center gap-2 w-full sm:w-auto ${
-              showColorsHelp ? "ring-2 ring-primary" : ""
-            }`}
-            aria-pressed={showColorsHelp}
-          >
-            <HelpCircle className="h-4 w-4" aria-hidden="true" />
-            {t.visualIdentity.step3.helpText}
-          </Button>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Button
+              variant="outline"
+              onClick={handleColorsCantDecide}
+              className={`flex items-center gap-2 w-full sm:w-auto text-sm sm:text-base px-4 py-2 ${
+                showColorsHelp ? "ring-2 ring-primary" : ""
+              }`}
+              aria-pressed={showColorsHelp}
+            >
+              <HelpCircle className="h-4 w-4" aria-hidden="true" />
+              <span className="text-center">{t.visualIdentity.step3.helpText}</span>
+            </Button>
+            
+            {showColorsHelp && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleCancelColorsHelp}
+                className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600 flex-shrink-0"
+                aria-label="Cancel color help request"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>

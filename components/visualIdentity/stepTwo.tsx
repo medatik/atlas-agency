@@ -4,7 +4,7 @@ import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Eye, CheckCircle, HelpCircle } from "lucide-react";
+import { Eye, CheckCircle, HelpCircle, X } from "lucide-react";
 import { FormData, FormErrors, Translation, LogoType } from '@/lib/types';
 import { sanitizeInput } from '@/lib/validation';
 
@@ -41,6 +41,14 @@ export function StepTwo({ t, formData, setFormData, errors }: StepTwoProps) {
     }));
   };
 
+  const handleCancelSelection = () => {
+    setFormData(prev => ({
+      ...prev,
+      logoType: "",
+      cantDecideHelp: ""
+    }));
+  };
+
   const handleHelpTextChange = (value: string) => {
     const sanitizedValue = sanitizeInput(value);
     setFormData(prev => ({ ...prev, cantDecideHelp: sanitizedValue }));
@@ -64,7 +72,7 @@ export function StepTwo({ t, formData, setFormData, errors }: StepTwoProps) {
         {logoTypes.map((type) => (
           <Card
             key={type.id}
-            className={`cursor-pointer transition-all duration-200 hover:shadow-md focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 ${
+            className={`cursor-pointer transition-all duration-200 hover:shadow-md focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 relative ${
               formData.logoType === type.id
                 ? "ring-2 ring-primary bg-primary/5"
                 : "hover:bg-muted/50"
@@ -89,7 +97,21 @@ export function StepTwo({ t, formData, setFormData, errors }: StepTwoProps) {
               </div>
               <p className="text-xs sm:text-sm font-medium">{type.label}</p>
               {formData.logoType === type.id && (
-                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-primary mx-auto mt-2" aria-hidden="true" />
+                <>
+                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-primary mx-auto mt-2" aria-hidden="true" />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCancelSelection();
+                    }}
+                    className="absolute top-2 right-2 h-6 w-6 p-0 hover:bg-red-100 hover:text-red-600"
+                    aria-label="Cancel selection"
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </>
               )}
             </CardContent>
           </Card>
@@ -97,17 +119,31 @@ export function StepTwo({ t, formData, setFormData, errors }: StepTwoProps) {
       </div>
 
       <div className="text-center space-y-4 max-w-2xl mx-auto">
-        <Button
-          variant="outline"
-          onClick={handleCantDecide}
-          className={`flex items-center gap-2 w-full sm:w-auto ${
-            formData.logoType === "cant-decide" ? "ring-2 ring-primary" : ""
-          }`}
-          aria-pressed={formData.logoType === "cant-decide"}
-        >
-          <HelpCircle className="h-4 w-4" aria-hidden="true" />
-          {t.visualIdentity.step2.helpText}
-        </Button>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <Button
+            variant="outline"
+            onClick={handleCantDecide}
+            className={`flex items-center gap-2 w-full sm:w-auto text-sm sm:text-base px-4 py-2 ${
+              formData.logoType === "cant-decide" ? "ring-2 ring-primary" : ""
+            }`}
+            aria-pressed={formData.logoType === "cant-decide"}
+          >
+            <HelpCircle className="h-4 w-4" aria-hidden="true" />
+            <span className="text-center">{t.visualIdentity.step2.helpText}</span>
+          </Button>
+          
+          {formData.logoType === "cant-decide" && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleCancelSelection}
+              className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600 flex-shrink-0"
+              aria-label="Cancel help request"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
 
         {formData.logoType === "cant-decide" && (
           <div className="mt-4">
