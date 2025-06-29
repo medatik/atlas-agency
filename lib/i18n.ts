@@ -86,7 +86,7 @@ export const translations = {
       },
       step3: {
         title: "NOW THE COLORS",
-        subtitle: "CHOOSE 2-3 PRIMARY COLORS / 2-4 SECONDARY COLORS",
+        subtitle: "CHOOSE 2-4 PRIMARY COLORS / 2-4 SECONDARY COLORS",
         primaryColors: "PRIMARY COLORS",
         primaryColorsDesc: "Main colors that represent your brand",
         secondaryColors: "SECONDARY COLORS", 
@@ -220,7 +220,7 @@ export const translations = {
       },
       step3: {
         title: "MAINTENANT LES COULEURS",
-        subtitle: "CHOISISSEZ 2-3 COULEURS PRIMAIRES / 2-4 COULEURS SECONDAIRES",
+        subtitle: "CHOISISSEZ 2-4 COULEURS PRIMAIRES / 2-4 COULEURS SECONDAIRES",
         primaryColors: "COULEURS PRIMAIRES",
         primaryColorsDesc: "Couleurs principales qui représentent votre marque",
         secondaryColors: "COULEURS SECONDAIRES",
@@ -351,7 +351,7 @@ export const translations = {
       },
       step3: {
         title: "الآن الألوان",
-        subtitle: "اختر 2-3 ألوان أساسية / 2-4 ألوان ثانوية",
+        subtitle: "اختر 2-4 ألوان أساسية / 2-4 ألوان ثانوية",
         primaryColors: "الألوان الأساسية",
         primaryColorsDesc: "الألوان الرئيسية التي تمثل علامتك التجارية",
         secondaryColors: "الألوان الثانوية",
