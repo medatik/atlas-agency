@@ -110,7 +110,7 @@ export function Navigation() {
         </button>
 
         {/* Desktop Navigation */}
-        <div className={`hidden md:flex items-center space-x-6 ${locale === 'ar' ? 'rtl:space-x-reverse' : ''}`}>
+        <div className={`hidden lg:flex items-center space-x-6 ${locale === 'ar' ? 'rtl:space-x-reverse' : ''}`}>
           {navItems.map((item) => (
             <button
               key={item.href}
@@ -125,7 +125,7 @@ export function Navigation() {
 
         <div className="flex items-center space-x-2 rtl:space-x-reverse">
           {/* Sign In/Up Buttons - Desktop */}
-          <div className="hidden md:flex items-center space-x-2 mr-2 rtl:space-x-reverse rtl:ml-2 rtl:mr-0">
+          <div className="hidden lg:flex items-center space-x-2 mr-2 rtl:space-x-reverse rtl:ml-2 rtl:mr-0">
             <SignInDialog>
               <Button variant="ghost" size="sm" className="text-sm focus:ring-2 focus:ring-primary focus:ring-offset-2">
                 <LogIn className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" aria-hidden="true" />
@@ -140,6 +140,20 @@ export function Navigation() {
             </SignUpDialog>
           </div>
 
+          {/* Medium screen navigation - show some nav items */}
+          <div className={`hidden md:flex lg:hidden items-center space-x-4 mr-2 ${locale === 'ar' ? 'rtl:space-x-reverse rtl:ml-2 rtl:mr-0' : ''}`}>
+            {navItems.slice(0, 3).map((item) => (
+              <button
+                key={item.href}
+                onClick={() => handleNavClick(item.href)}
+                className="text-xs font-medium transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md px-2 py-1"
+                aria-label={`Navigate to ${item.label}`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
           <LanguageToggle />
           <ThemeToggle />
 
@@ -147,7 +161,7 @@ export function Navigation() {
           <Button 
             variant="ghost" 
             size="sm" 
-            className="md:hidden focus:ring-2 focus:ring-primary focus:ring-offset-2" 
+            className="lg:hidden focus:ring-2 focus:ring-primary focus:ring-offset-2" 
             onClick={() => setIsOpen(!isOpen)}
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
@@ -163,7 +177,7 @@ export function Navigation() {
         <div 
           id="mobile-menu"
           ref={menuRef}
-          className="md:hidden border-t bg-background/95 backdrop-blur"
+          className="lg:hidden border-t bg-background/95 backdrop-blur"
           role="menu"
           aria-label="Mobile navigation menu"
         >
