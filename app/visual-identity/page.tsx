@@ -23,6 +23,7 @@ interface FormData {
   cantDecideHelp: string
   primaryColors: string[]
   secondaryColors: string[]
+  colorsCantDecideHelp: string
   fontPreference: string
   customFont: string
   additionalRequests: string
@@ -36,6 +37,7 @@ export default function VisualIdentityPage() {
   const [currentStep, setCurrentStep] = useState(1)
   const [showSummary, setShowSummary] = useState(false)
   const [currentColor, setCurrentColor] = useState("#ffffff")
+  const [showColorsHelp, setShowColorsHelp] = useState(false)
   const [formData, setFormData] = useState<FormData>({
     brandName: "",
     brandDescription: "",
@@ -43,6 +45,7 @@ export default function VisualIdentityPage() {
     cantDecideHelp: "",
     primaryColors: [],
     secondaryColors: [],
+    colorsCantDecideHelp: "",
     fontPreference: "",
     customFont: "",
     additionalRequests: "",
@@ -85,7 +88,8 @@ export default function VisualIdentityPage() {
       case 2:
         return formData.logoType !== "" || formData.cantDecideHelp.trim() !== ""
       case 3:
-        return formData.primaryColors.length >= 2 && formData.secondaryColors.length >= 2
+        return (formData.primaryColors.length >= 2 && formData.secondaryColors.length >= 2) || 
+               (showColorsHelp && formData.colorsCantDecideHelp.trim() !== "")
       case 4:
         if (formData.fontPreference === "specific") {
           return formData.fontPreference !== "" && formData.customFont.trim() !== ""
@@ -133,6 +137,25 @@ export default function VisualIdentityPage() {
       logoType: "cant-decide",
       cantDecideHelp: prev.cantDecideHelp || ""
     }))
+  }
+
+  const handleColorsCantDecide = () => {
+    setShowColorsHelp(!showColorsHelp)
+    if (!showColorsHelp) {
+      // Clear colors when choosing help
+      setFormData(prev => ({
+        ...prev,
+        primaryColors: [],
+        secondaryColors: [],
+        colorsCantDecideHelp: prev.colorsCantDecideHelp || ""
+      }))
+    } else {
+      // Clear help text when going back to manual selection
+      setFormData(prev => ({
+        ...prev,
+        colorsCantDecideHelp: ""
+      }))
+    }
   }
 
   const handleColorChange = (color: any) => {
@@ -294,7 +317,7 @@ export default function VisualIdentityPage() {
               <Button
                 variant="outline"
                 onClick={handleCantDecide}
-                className={`flex items-center gap-2 ${
+                className={`flex items-center gap-2 w-full sm:w-auto ${
                   formData.logoType === "cant-decide" ? "ring-2 ring-primary" : ""
                 }`}
               >
@@ -329,108 +352,125 @@ export default function VisualIdentityPage() {
             </div>
 
             <div className="space-y-6">
-              {/* Color Picker - Always Visible */}
-              <div className="flex justify-center">
-                <div className="relative">
-                  <SketchPicker
-                    color={currentColor}
-                    onChange={handleColorChange}
-                    disableAlpha={true}
-                    styles={colorPickerStyles}
-                    width="280px"
+              {!showColorsHelp ? (
+                <>
+                  {/* Color Picker - Always Visible */}
+                  <div className="flex justify-center">
+                    <div className="relative">
+                      <SketchPicker
+                        color={currentColor}
+                        onChange={handleColorChange}
+                        disableAlpha={true}
+                        styles={colorPickerStyles}
+                        width="280px"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Color Selection Grid */}
+                  <div className="grid gap-6 lg:grid-cols-2">
+                    {/* Primary Colors */}
+                    <div className="space-y-4">
+                      <div className="text-center">
+                        <Label className="text-base font-semibold">{t.visualIdentity.step3.primaryColors}</Label>
+                        <p className="text-xs text-muted-foreground">{t.visualIdentity.step3.primaryColorsDesc}</p>
+                        <p className="text-xs text-muted-foreground">({formData.primaryColors.length}/4) - Min: 2</p>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        {formData.primaryColors.map((color, index) => (
+                          <div key={index} className="flex items-center gap-2 p-2 border rounded-lg">
+                            <div
+                              className="w-6 h-6 sm:w-8 sm:h-8 rounded border flex-shrink-0"
+                              style={{ backgroundColor: color }}
+                            />
+                            <span className="text-xs sm:text-sm font-mono flex-1 truncate">{color}</span>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => removeColor(color, 'primary')}
+                              className="h-6 w-6 p-0 flex-shrink-0"
+                            >
+                              <X className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        ))}
+                        
+                        {formData.primaryColors.length < 4 && (
+                          <Button
+                            variant="outline"
+                            onClick={addColorToPrimary}
+                            className="w-full text-xs sm:text-sm"
+                            disabled={formData.primaryColors.length >= 4 || formData.primaryColors.includes(currentColor)}
+                          >
+                            <Palette className="h-4 w-4 mr-2" />
+                            Add Primary Color
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Secondary Colors */}
+                    <div className="space-y-4">
+                      <div className="text-center">
+                        <Label className="text-base font-semibold">{t.visualIdentity.step3.secondaryColors}</Label>
+                        <p className="text-xs text-muted-foreground">{t.visualIdentity.step3.secondaryColorsDesc}</p>
+                        <p className="text-xs text-muted-foreground">({formData.secondaryColors.length}/4) - Min: 2</p>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        {formData.secondaryColors.map((color, index) => (
+                          <div key={index} className="flex items-center gap-2 p-2 border rounded-lg">
+                            <div
+                              className="w-6 h-6 sm:w-8 sm:h-8 rounded border flex-shrink-0"
+                              style={{ backgroundColor: color }}
+                            />
+                            <span className="text-xs sm:text-sm font-mono flex-1 truncate">{color}</span>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => removeColor(color, 'secondary')}
+                              className="h-6 w-6 p-0 flex-shrink-0"
+                            >
+                              <X className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        ))}
+                        
+                        {formData.secondaryColors.length < 4 && (
+                          <Button
+                            variant="outline"
+                            onClick={addColorToSecondary}
+                            className="w-full text-xs sm:text-sm"
+                            disabled={formData.secondaryColors.length >= 4 || formData.secondaryColors.includes(currentColor)}
+                          >
+                            <Palette className="h-4 w-4 mr-2" />
+                            Add Secondary Color
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="max-w-2xl mx-auto">
+                  <Textarea
+                    value={formData.colorsCantDecideHelp}
+                    onChange={(e) => setFormData(prev => ({ ...prev, colorsCantDecideHelp: e.target.value }))}
+                    placeholder="Tell us about your brand style, industry, preferred mood, or any color preferences you have..."
+                    rows={4}
+                    className="w-full"
                   />
                 </div>
-              </div>
-
-              {/* Color Selection Grid */}
-              <div className="grid gap-6 lg:grid-cols-2">
-                {/* Primary Colors */}
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <Label className="text-base font-semibold">{t.visualIdentity.step3.primaryColors}</Label>
-                    <p className="text-xs text-muted-foreground">{t.visualIdentity.step3.primaryColorsDesc}</p>
-                    <p className="text-xs text-muted-foreground">({formData.primaryColors.length}/4) - Min: 2</p>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    {formData.primaryColors.map((color, index) => (
-                      <div key={index} className="flex items-center gap-2 p-2 border rounded-lg">
-                        <div
-                          className="w-6 h-6 sm:w-8 sm:h-8 rounded border flex-shrink-0"
-                          style={{ backgroundColor: color }}
-                        />
-                        <span className="text-xs sm:text-sm font-mono flex-1 truncate">{color}</span>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => removeColor(color, 'primary')}
-                          className="h-6 w-6 p-0 flex-shrink-0"
-                        >
-                          <X className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    ))}
-                    
-                    {formData.primaryColors.length < 4 && (
-                      <Button
-                        variant="outline"
-                        onClick={addColorToPrimary}
-                        className="w-full text-xs sm:text-sm"
-                        disabled={formData.primaryColors.length >= 4 || formData.primaryColors.includes(currentColor)}
-                      >
-                        <Palette className="h-4 w-4 mr-2" />
-                        Add Primary Color
-                      </Button>
-                    )}
-                  </div>
-                </div>
-
-                {/* Secondary Colors */}
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <Label className="text-base font-semibold">{t.visualIdentity.step3.secondaryColors}</Label>
-                    <p className="text-xs text-muted-foreground">{t.visualIdentity.step3.secondaryColorsDesc}</p>
-                    <p className="text-xs text-muted-foreground">({formData.secondaryColors.length}/4) - Min: 2</p>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    {formData.secondaryColors.map((color, index) => (
-                      <div key={index} className="flex items-center gap-2 p-2 border rounded-lg">
-                        <div
-                          className="w-6 h-6 sm:w-8 sm:h-8 rounded border flex-shrink-0"
-                          style={{ backgroundColor: color }}
-                        />
-                        <span className="text-xs sm:text-sm font-mono flex-1 truncate">{color}</span>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => removeColor(color, 'secondary')}
-                          className="h-6 w-6 p-0 flex-shrink-0"
-                        >
-                          <X className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    ))}
-                    
-                    {formData.secondaryColors.length < 4 && (
-                      <Button
-                        variant="outline"
-                        onClick={addColorToSecondary}
-                        className="w-full text-xs sm:text-sm"
-                        disabled={formData.secondaryColors.length >= 4 || formData.secondaryColors.includes(currentColor)}
-                      >
-                        <Palette className="h-4 w-4 mr-2" />
-                        Add Secondary Color
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </div>
+              )}
 
               <div className="text-center">
                 <Button
                   variant="outline"
-                  className="flex items-center gap-2"
+                  onClick={handleColorsCantDecide}
+                  className={`flex items-center gap-2 w-full sm:w-auto ${
+                    showColorsHelp ? "ring-2 ring-primary" : ""
+                  }`}
                 >
                   <HelpCircle className="h-4 w-4" />
                   {t.visualIdentity.step3.helpText}
@@ -650,7 +690,10 @@ export default function VisualIdentityPage() {
                         style={{ backgroundColor: color }}
                       />
                     ))}
-                    {formData.primaryColors.length === 0 && (
+                    {formData.primaryColors.length === 0 && showColorsHelp && (
+                      <span className="text-muted-foreground text-sm">AI Assistance Requested</span>
+                    )}
+                    {formData.primaryColors.length === 0 && !showColorsHelp && (
                       <span className="text-muted-foreground text-sm">None selected</span>
                     )}
                   </div>
@@ -665,7 +708,10 @@ export default function VisualIdentityPage() {
                         style={{ backgroundColor: color }}
                       />
                     ))}
-                    {formData.secondaryColors.length === 0 && (
+                    {formData.secondaryColors.length === 0 && showColorsHelp && (
+                      <span className="text-muted-foreground text-sm">AI Assistance Requested</span>
+                    )}
+                    {formData.secondaryColors.length === 0 && !showColorsHelp && (
                       <span className="text-muted-foreground text-sm">None selected</span>
                     )}
                   </div>
