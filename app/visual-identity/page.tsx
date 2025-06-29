@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useLanguage } from "@/hooks/use-language"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,6 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowLeft, ArrowRight, Palette, Type, Eye, Sparkles, CheckCircle, HelpCircle, Star, Calendar, MessageSquare, X } from "lucide-react"
 import Link from "next/link"
 import { SketchPicker } from 'react-color'
+import { useTheme } from "next-themes"
 
 interface FormData {
   brandName: string
@@ -31,10 +32,10 @@ interface FormData {
 
 export default function VisualIdentityPage() {
   const { t } = useLanguage()
+  const { theme } = useTheme()
   const [currentStep, setCurrentStep] = useState(1)
   const [showSummary, setShowSummary] = useState(false)
-  const [showColorPicker, setShowColorPicker] = useState(false)
-  const [currentColorType, setCurrentColorType] = useState<'primary' | 'secondary'>('primary')
+  const [currentColor, setCurrentColor] = useState("#ffffff")
   const [formData, setFormData] = useState<FormData>({
     brandName: "",
     brandDescription: "",
@@ -86,6 +87,9 @@ export default function VisualIdentityPage() {
       case 3:
         return formData.primaryColors.length >= 2 && formData.secondaryColors.length >= 2
       case 4:
+        if (formData.fontPreference === "specific") {
+          return formData.fontPreference !== "" && formData.customFont.trim() !== ""
+        }
         return formData.fontPreference !== ""
       case 5:
         return formData.projectTimeline !== "" && formData.communicationPreference !== ""
@@ -94,15 +98,24 @@ export default function VisualIdentityPage() {
     }
   }
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
+  }
+
   const handleNext = () => {
     if (currentStep < totalSteps && canProceedToNext()) {
       setCurrentStep(currentStep + 1)
+      scrollToTop()
     }
   }
 
   const handlePrevious = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1)
+      scrollToTop()
     }
   }
 
@@ -123,20 +136,25 @@ export default function VisualIdentityPage() {
   }
 
   const handleColorChange = (color: any) => {
-    const colorValue = color.hex
-    const field = currentColorType === 'primary' ? 'primaryColors' : 'secondaryColors'
-    const maxColors = currentColorType === 'primary' ? 4 : 4
-    
-    setFormData(prev => {
-      const currentColors = prev[field]
-      if (!currentColors.includes(colorValue) && currentColors.length < maxColors) {
-        return {
-          ...prev,
-          [field]: [...currentColors, colorValue]
-        }
-      }
-      return prev
-    })
+    setCurrentColor(color.hex)
+  }
+
+  const addColorToPrimary = () => {
+    if (formData.primaryColors.length < 4 && !formData.primaryColors.includes(currentColor)) {
+      setFormData(prev => ({
+        ...prev,
+        primaryColors: [...prev.primaryColors, currentColor]
+      }))
+    }
+  }
+
+  const addColorToSecondary = () => {
+    if (formData.secondaryColors.length < 4 && !formData.secondaryColors.includes(currentColor)) {
+      setFormData(prev => ({
+        ...prev,
+        secondaryColors: [...prev.secondaryColors, currentColor]
+      }))
+    }
   }
 
   const removeColor = (colorValue: string, type: 'primary' | 'secondary') => {
@@ -147,14 +165,48 @@ export default function VisualIdentityPage() {
     }))
   }
 
-  const openColorPicker = (type: 'primary' | 'secondary') => {
-    setCurrentColorType(type)
-    setShowColorPicker(true)
-  }
-
   const handleSubmit = () => {
     console.log('Form submitted:', formData)
     setShowSummary(true)
+    scrollToTop()
+  }
+
+  // Custom styles for dark mode color picker
+  const colorPickerStyles = {
+    default: {
+      picker: {
+        backgroundColor: theme === 'dark' ? '#1f2937' : '#ffffff',
+        border: theme === 'dark' ? '1px solid #374151' : '1px solid #e5e7eb',
+        borderRadius: '8px',
+        boxShadow: theme === 'dark' 
+          ? '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2)' 
+          : '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+      },
+      saturation: {
+        borderRadius: '4px',
+      },
+      hue: {
+        borderRadius: '4px',
+      },
+      alpha: {
+        borderRadius: '4px',
+      },
+      color: {
+        borderRadius: '4px',
+      },
+      swatch: {
+        borderRadius: '4px',
+      },
+      input: {
+        backgroundColor: theme === 'dark' ? '#374151' : '#ffffff',
+        color: theme === 'dark' ? '#f9fafb' : '#111827',
+        border: theme === 'dark' ? '1px solid #4b5563' : '1px solid #d1d5db',
+        borderRadius: '4px',
+      },
+      label: {
+        color: theme === 'dark' ? '#f9fafb' : '#111827',
+      },
+    },
   }
 
   const renderStepContent = () => {
@@ -166,11 +218,11 @@ export default function VisualIdentityPage() {
               <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
                 <Sparkles className="h-8 w-8 text-primary" />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bold">{t.visualIdentity.step1.title}</h2>
-              <p className="text-muted-foreground">{t.visualIdentity.step1.subtitle}</p>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">{t.visualIdentity.step1.title}</h2>
+              <p className="text-sm sm:text-base text-muted-foreground">{t.visualIdentity.step1.subtitle}</p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-4 max-w-2xl mx-auto">
               <div>
                 <Label htmlFor="brandName" className="text-sm font-medium">
                   {t.visualIdentity.step1.brandName} <span className="text-red-500">*</span>
@@ -210,11 +262,11 @@ export default function VisualIdentityPage() {
               <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
                 <Eye className="h-8 w-8 text-primary" />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bold">{t.visualIdentity.step2.title}</h2>
-              <p className="text-muted-foreground">{t.visualIdentity.step2.subtitle}</p>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">{t.visualIdentity.step2.title}</h2>
+              <p className="text-sm sm:text-base text-muted-foreground">{t.visualIdentity.step2.subtitle}</p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 max-w-4xl mx-auto">
               {logoTypes.map((type) => (
                 <Card
                   key={type.id}
@@ -225,20 +277,20 @@ export default function VisualIdentityPage() {
                   }`}
                   onClick={() => handleLogoTypeSelect(type.id)}
                 >
-                  <CardContent className="p-4 text-center">
-                    <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-muted flex items-center justify-center">
-                      <span className="text-lg font-bold text-primary">{type.id}</span>
+                  <CardContent className="p-3 sm:p-4 text-center">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3 rounded-lg bg-muted flex items-center justify-center">
+                      <span className="text-base sm:text-lg font-bold text-primary">{type.id}</span>
                     </div>
-                    <p className="text-sm font-medium">{type.label}</p>
+                    <p className="text-xs sm:text-sm font-medium">{type.label}</p>
                     {formData.logoType === type.id && (
-                      <CheckCircle className="h-5 w-5 text-primary mx-auto mt-2" />
+                      <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-primary mx-auto mt-2" />
                     )}
                   </CardContent>
                 </Card>
               ))}
             </div>
 
-            <div className="text-center space-y-4">
+            <div className="text-center space-y-4 max-w-2xl mx-auto">
               <Button
                 variant="outline"
                 onClick={handleCantDecide}
@@ -257,7 +309,7 @@ export default function VisualIdentityPage() {
                     onChange={(e) => setFormData(prev => ({ ...prev, cantDecideHelp: e.target.value }))}
                     placeholder={t.visualIdentity.step2.helpPlaceholder}
                     rows={3}
-                    className="max-w-md mx-auto"
+                    className="w-full"
                   />
                 </div>
               )}
@@ -272,137 +324,118 @@ export default function VisualIdentityPage() {
               <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
                 <Palette className="h-8 w-8 text-primary" />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bold">{t.visualIdentity.step3.title}</h2>
-              <p className="text-muted-foreground">{t.visualIdentity.step3.subtitle}</p>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">{t.visualIdentity.step3.title}</h2>
+              <p className="text-sm sm:text-base text-muted-foreground">{t.visualIdentity.step3.subtitle}</p>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-6 items-start">
-              {/* Primary Colors - Left */}
-              <div className="space-y-4">
-                <div className="text-center">
-                  <Label className="text-base font-semibold">{t.visualIdentity.step3.primaryColors}</Label>
-                  <p className="text-xs text-muted-foreground">{t.visualIdentity.step3.primaryColorsDesc}</p>
-                  <p className="text-xs text-muted-foreground">({formData.primaryColors.length}/4) - Min: 2</p>
-                </div>
-                
-                <div className="space-y-2">
-                  {formData.primaryColors.map((color, index) => (
-                    <div key={index} className="flex items-center gap-2 p-2 border rounded-lg">
-                      <div
-                        className="w-8 h-8 rounded border"
-                        style={{ backgroundColor: color }}
-                      />
-                      <span className="text-sm font-mono flex-1">{color}</span>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => removeColor(color, 'primary')}
-                        className="h-6 w-6 p-0"
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  ))}
-                  
-                  {formData.primaryColors.length < 4 && (
-                    <Button
-                      variant="outline"
-                      onClick={() => openColorPicker('primary')}
-                      className="w-full"
-                      disabled={formData.primaryColors.length >= 4}
-                    >
-                      <Palette className="h-4 w-4 mr-2" />
-                      Add Primary Color
-                    </Button>
-                  )}
+            <div className="space-y-6">
+              {/* Color Picker - Always Visible */}
+              <div className="flex justify-center">
+                <div className="relative">
+                  <SketchPicker
+                    color={currentColor}
+                    onChange={handleColorChange}
+                    disableAlpha={true}
+                    styles={colorPickerStyles}
+                    width="280px"
+                  />
                 </div>
               </div>
 
-              {/* Color Picker - Center */}
-              <div className="flex flex-col items-center justify-center space-y-4">
-                {showColorPicker && (
-                  <div className="relative">
-                    <div className="absolute top-0 right-0 z-10">
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => setShowColorPicker(false)}
-                        className="h-6 w-6 p-0"
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </div>
-                    <SketchPicker
-                      color="#ffffff"
-                      onChange={handleColorChange}
-                      disableAlpha={true}
-                    />
+              {/* Color Selection Grid */}
+              <div className="grid gap-6 lg:grid-cols-2">
+                {/* Primary Colors */}
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <Label className="text-base font-semibold">{t.visualIdentity.step3.primaryColors}</Label>
+                    <p className="text-xs text-muted-foreground">{t.visualIdentity.step3.primaryColorsDesc}</p>
+                    <p className="text-xs text-muted-foreground">({formData.primaryColors.length}/4) - Min: 2</p>
                   </div>
-                )}
-                
-                {!showColorPicker && (
-                  <>
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
-                         onClick={() => setShowColorPicker(true)}>
-                      <Palette className="h-8 w-8 text-white" />
-                    </div>
-                    <p className="text-sm text-center text-muted-foreground max-w-xs">
-                      {t.visualIdentity.step3.colorPickerText}
-                    </p>
-                  </>
-                )}
-              </div>
-
-              {/* Secondary Colors - Right */}
-              <div className="space-y-4">
-                <div className="text-center">
-                  <Label className="text-base font-semibold">{t.visualIdentity.step3.secondaryColors}</Label>
-                  <p className="text-xs text-muted-foreground">{t.visualIdentity.step3.secondaryColorsDesc}</p>
-                  <p className="text-xs text-muted-foreground">({formData.secondaryColors.length}/4) - Min: 2</p>
-                </div>
-                
-                <div className="space-y-2">
-                  {formData.secondaryColors.map((color, index) => (
-                    <div key={index} className="flex items-center gap-2 p-2 border rounded-lg">
-                      <div
-                        className="w-8 h-8 rounded border"
-                        style={{ backgroundColor: color }}
-                      />
-                      <span className="text-sm font-mono flex-1">{color}</span>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => removeColor(color, 'secondary')}
-                        className="h-6 w-6 p-0"
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  ))}
                   
-                  {formData.secondaryColors.length < 4 && (
-                    <Button
-                      variant="outline"
-                      onClick={() => openColorPicker('secondary')}
-                      className="w-full"
-                      disabled={formData.secondaryColors.length >= 4}
-                    >
-                      <Palette className="h-4 w-4 mr-2" />
-                      Add Secondary Color
-                    </Button>
-                  )}
+                  <div className="space-y-2">
+                    {formData.primaryColors.map((color, index) => (
+                      <div key={index} className="flex items-center gap-2 p-2 border rounded-lg">
+                        <div
+                          className="w-6 h-6 sm:w-8 sm:h-8 rounded border flex-shrink-0"
+                          style={{ backgroundColor: color }}
+                        />
+                        <span className="text-xs sm:text-sm font-mono flex-1 truncate">{color}</span>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => removeColor(color, 'primary')}
+                          className="h-6 w-6 p-0 flex-shrink-0"
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ))}
+                    
+                    {formData.primaryColors.length < 4 && (
+                      <Button
+                        variant="outline"
+                        onClick={addColorToPrimary}
+                        className="w-full text-xs sm:text-sm"
+                        disabled={formData.primaryColors.length >= 4 || formData.primaryColors.includes(currentColor)}
+                      >
+                        <Palette className="h-4 w-4 mr-2" />
+                        Add Primary Color
+                      </Button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Secondary Colors */}
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <Label className="text-base font-semibold">{t.visualIdentity.step3.secondaryColors}</Label>
+                    <p className="text-xs text-muted-foreground">{t.visualIdentity.step3.secondaryColorsDesc}</p>
+                    <p className="text-xs text-muted-foreground">({formData.secondaryColors.length}/4) - Min: 2</p>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    {formData.secondaryColors.map((color, index) => (
+                      <div key={index} className="flex items-center gap-2 p-2 border rounded-lg">
+                        <div
+                          className="w-6 h-6 sm:w-8 sm:h-8 rounded border flex-shrink-0"
+                          style={{ backgroundColor: color }}
+                        />
+                        <span className="text-xs sm:text-sm font-mono flex-1 truncate">{color}</span>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => removeColor(color, 'secondary')}
+                          className="h-6 w-6 p-0 flex-shrink-0"
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ))}
+                    
+                    {formData.secondaryColors.length < 4 && (
+                      <Button
+                        variant="outline"
+                        onClick={addColorToSecondary}
+                        className="w-full text-xs sm:text-sm"
+                        disabled={formData.secondaryColors.length >= 4 || formData.secondaryColors.includes(currentColor)}
+                      >
+                        <Palette className="h-4 w-4 mr-2" />
+                        Add Secondary Color
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="text-center">
-              <Button
-                variant="outline"
-                className="flex items-center gap-2"
-              >
-                <HelpCircle className="h-4 w-4" />
-                {t.visualIdentity.step3.helpText}
-              </Button>
+              <div className="text-center">
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2"
+                >
+                  <HelpCircle className="h-4 w-4" />
+                  {t.visualIdentity.step3.helpText}
+                </Button>
+              </div>
             </div>
           </div>
         )
@@ -414,8 +447,8 @@ export default function VisualIdentityPage() {
               <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
                 <Type className="h-8 w-8 text-primary" />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bold">{t.visualIdentity.step4.title}</h2>
-              <p className="text-muted-foreground">{t.visualIdentity.step4.subtitle}</p>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">{t.visualIdentity.step4.title}</h2>
+              <p className="text-sm sm:text-base text-muted-foreground">{t.visualIdentity.step4.subtitle}</p>
             </div>
 
             <div className="space-y-6 max-w-2xl mx-auto">
@@ -439,7 +472,7 @@ export default function VisualIdentityPage() {
                       <CardContent className="p-4">
                         <div className="flex items-center space-x-3">
                           <RadioGroupItem value={option.id} id={option.id} />
-                          <Label htmlFor={option.id} className="cursor-pointer text-base">
+                          <Label htmlFor={option.id} className="cursor-pointer text-sm sm:text-base">
                             {option.label}
                           </Label>
                         </div>
@@ -452,7 +485,7 @@ export default function VisualIdentityPage() {
               {formData.fontPreference === 'specific' && (
                 <div>
                   <Label htmlFor="customFont" className="text-sm font-medium">
-                    {t.visualIdentity.step4.customFont}
+                    {t.visualIdentity.step4.customFont} <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     id="customFont"
@@ -460,6 +493,7 @@ export default function VisualIdentityPage() {
                     onChange={(e) => setFormData(prev => ({ ...prev, customFont: e.target.value }))}
                     placeholder={t.visualIdentity.step4.customFontPlaceholder}
                     className="mt-1"
+                    required
                   />
                 </div>
               )}
@@ -490,8 +524,8 @@ export default function VisualIdentityPage() {
               <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
                 <Star className="h-8 w-8 text-primary" />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bold">{t.visualIdentity.step5.title}</h2>
-              <p className="text-muted-foreground">{t.visualIdentity.step5.subtitle}</p>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">{t.visualIdentity.step5.title}</h2>
+              <p className="text-sm sm:text-base text-muted-foreground">{t.visualIdentity.step5.subtitle}</p>
             </div>
 
             <div className="space-y-6 max-w-2xl mx-auto">
@@ -518,7 +552,7 @@ export default function VisualIdentityPage() {
                       <CardContent className="p-4">
                         <div className="flex items-center space-x-3">
                           <RadioGroupItem value={option.id} id={option.id} />
-                          <Label htmlFor={option.id} className="cursor-pointer">
+                          <Label htmlFor={option.id} className="cursor-pointer text-sm sm:text-base">
                             {option.label}
                           </Label>
                         </div>
@@ -553,7 +587,7 @@ export default function VisualIdentityPage() {
                       <CardContent className="p-4">
                         <div className="flex items-center space-x-3">
                           <RadioGroupItem value={option.id} id={option.id} />
-                          <Label htmlFor={option.id} className="cursor-pointer">
+                          <Label htmlFor={option.id} className="cursor-pointer text-sm sm:text-base">
                             {option.label}
                           </Label>
                         </div>
@@ -579,17 +613,17 @@ export default function VisualIdentityPage() {
             <div className="w-20 h-20 mx-auto rounded-full bg-green-100 flex items-center justify-center">
               <CheckCircle className="h-10 w-10 text-green-600" />
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
               {t.visualIdentity.summary.title}
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-base sm:text-lg text-muted-foreground">
               {t.visualIdentity.summary.subtitle}
             </p>
           </div>
 
           <Card className="border-primary/20">
             <CardHeader>
-              <CardTitle className="text-center text-xl">{t.visualIdentity.summary.projectDetails}</CardTitle>
+              <CardTitle className="text-center text-lg sm:text-xl">{t.visualIdentity.summary.projectDetails}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid gap-6 sm:grid-cols-2">
@@ -608,7 +642,7 @@ export default function VisualIdentityPage() {
                 </div>
                 <div>
                   <Label className="font-semibold">{t.visualIdentity.step3.primaryColors}:</Label>
-                  <div className="flex gap-1 mt-1">
+                  <div className="flex gap-1 mt-1 flex-wrap">
                     {formData.primaryColors.map((color, index) => (
                       <div
                         key={index}
@@ -623,7 +657,7 @@ export default function VisualIdentityPage() {
                 </div>
                 <div>
                   <Label className="font-semibold">{t.visualIdentity.step3.secondaryColors}:</Label>
-                  <div className="flex gap-1 mt-1">
+                  <div className="flex gap-1 mt-1 flex-wrap">
                     {formData.secondaryColors.map((color, index) => (
                       <div
                         key={index}
@@ -667,7 +701,7 @@ export default function VisualIdentityPage() {
 
               <div className="text-center pt-6">
                 <p className="text-muted-foreground mb-4">{t.visualIdentity.summary.nextSteps}</p>
-                <div className="flex gap-4 justify-center">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button onClick={() => setShowSummary(false)} variant="outline">
                     {t.visualIdentity.summary.editProject}
                   </Button>
@@ -696,10 +730,10 @@ export default function VisualIdentityPage() {
           </Link>
           
           <div className="space-y-2">
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
               {t.visualIdentity.welcome} <span className="text-primary">ATLAS</span>
             </h1>
-            <p className="text-lg text-muted-foreground">{t.visualIdentity.serviceTitle}</p>
+            <p className="text-base sm:text-lg text-muted-foreground">{t.visualIdentity.serviceTitle}</p>
           </div>
         </div>
 
@@ -721,18 +755,18 @@ export default function VisualIdentityPage() {
 
         {/* Main Content */}
         <Card className="mb-8">
-          <CardContent className="p-6 sm:p-8">
+          <CardContent className="p-4 sm:p-6 md:p-8">
             {renderStepContent()}
           </CardContent>
         </Card>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
           <Button
             variant="outline"
             onClick={handlePrevious}
             disabled={currentStep === 1}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 w-full sm:w-auto"
           >
             <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
             {t.visualIdentity.previous}
@@ -742,7 +776,7 @@ export default function VisualIdentityPage() {
             <Button
               onClick={handleNext}
               disabled={!canProceedToNext()}
-              className="flex items-center gap-2 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
             >
               {t.visualIdentity.nextStep}
               <ArrowRight className="h-4 w-4 rtl:rotate-180" />
@@ -751,7 +785,7 @@ export default function VisualIdentityPage() {
             <Button
               onClick={handleSubmit}
               disabled={!canProceedToNext()}
-              className="flex items-center gap-2 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
             >
               {t.visualIdentity.submit}
               <CheckCircle className="h-4 w-4" />
