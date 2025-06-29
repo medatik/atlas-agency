@@ -1,9 +1,9 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Palette, X, HelpCircle, RotateCcw, CheckCircle } from "lucide-react";
+import { Palette, X, HelpCircle } from "lucide-react";
 import { SketchPicker } from 'react-color';
 import { useTheme } from "next-themes";
 import { FormData, FormErrors, Translation } from '@/lib/types';
@@ -32,95 +32,83 @@ export function StepThree({
 }: StepThreeProps) {
   const { theme } = useTheme();
 
-  // Temporary state for current selections
-  const [tempPrimaryColors, setTempPrimaryColors] = useState(formData.primaryColors);
-  const [tempSecondaryColors, setTempSecondaryColors] = useState(formData.secondaryColors);
-  const [tempShowColorsHelp, setTempShowColorsHelp] = useState(showColorsHelp);
-  const [tempColorsCantDecideHelp, setTempColorsCantDecideHelp] = useState(formData.colorsCantDecideHelp);
-
-  // Saved state for reverting
-  const [savedPrimaryColors, setSavedPrimaryColors] = useState(formData.primaryColors);
-  const [savedSecondaryColors, setSavedSecondaryColors] = useState(formData.secondaryColors);
-  const [savedShowColorsHelp, setSavedShowColorsHelp] = useState(showColorsHelp);
-  const [savedColorsCantDecideHelp, setSavedColorsCantDecideHelp] = useState(formData.colorsCantDecideHelp);
-
-  // Update form data when temp state changes
-  useEffect(() => {
-    setFormData(prev => ({
-      ...prev,
-      primaryColors: tempPrimaryColors,
-      secondaryColors: tempSecondaryColors,
-      colorsCantDecideHelp: tempColorsCantDecideHelp
-    }));
-    setShowColorsHelp(tempShowColorsHelp);
-  }, [tempPrimaryColors, tempSecondaryColors, tempShowColorsHelp, tempColorsCantDecideHelp, setFormData, setShowColorsHelp]);
+  // Store the previous state when "Can't Decide" is clicked
+  const [previousState, setPreviousState] = useState<{
+    primaryColors: string[];
+    secondaryColors: string[];
+    colorsCantDecideHelp: string;
+  } | null>(null);
 
   const handleColorChange = (color: any) => {
     setCurrentColor(color.hex);
   };
 
   const addColorToPrimary = () => {
-    if (tempPrimaryColors.length < 4 && !tempPrimaryColors.includes(currentColor)) {
-      setTempPrimaryColors(prev => [...prev, currentColor]);
+    if (formData.primaryColors.length < 4 && !formData.primaryColors.includes(currentColor)) {
+      setFormData(prev => ({
+        ...prev,
+        primaryColors: [...prev.primaryColors, currentColor]
+      }));
     }
   };
 
   const addColorToSecondary = () => {
-    if (tempSecondaryColors.length < 4 && !tempSecondaryColors.includes(currentColor)) {
-      setTempSecondaryColors(prev => [...prev, currentColor]);
+    if (formData.secondaryColors.length < 4 && !formData.secondaryColors.includes(currentColor)) {
+      setFormData(prev => ({
+        ...prev,
+        secondaryColors: [...prev.secondaryColors, currentColor]
+      }));
     }
   };
 
   const removeColor = (colorValue: string, type: 'primary' | 'secondary') => {
-    if (type === 'primary') {
-      setTempPrimaryColors(prev => prev.filter(color => color !== colorValue));
-    } else {
-      setTempSecondaryColors(prev => prev.filter(color => color !== colorValue));
-    }
+    const field = type === 'primary' ? 'primaryColors' : 'secondaryColors';
+    setFormData(prev => ({
+      ...prev,
+      [field]: prev[field].filter(color => color !== colorValue)
+    }));
   };
 
   const handleColorsCantDecide = () => {
-    setTempShowColorsHelp(!tempShowColorsHelp);
-    if (!tempShowColorsHelp) {
+    if (!showColorsHelp) {
+      // Store current state before switching to help mode
+      setPreviousState({
+        primaryColors: formData.primaryColors,
+        secondaryColors: formData.secondaryColors,
+        colorsCantDecideHelp: formData.colorsCantDecideHelp
+      });
+      
       // Clear colors when choosing help
-      setTempPrimaryColors([]);
-      setTempSecondaryColors([]);
-      setTempColorsCantDecideHelp(tempColorsCantDecideHelp || "");
+      setFormData(prev => ({
+        ...prev,
+        primaryColors: [],
+        secondaryColors: [],
+        colorsCantDecideHelp: prev.colorsCantDecideHelp || ""
+      }));
     } else {
-      // Clear help text when going back to manual selection
-      setTempColorsCantDecideHelp("");
+      // Restore previous state when canceling help
+      if (previousState) {
+        setFormData(prev => ({
+          ...prev,
+          primaryColors: previousState.primaryColors,
+          secondaryColors: previousState.secondaryColors,
+          colorsCantDecideHelp: previousState.colorsCantDecideHelp
+        }));
+      } else {
+        // Fallback: clear help text when going back to manual selection
+        setFormData(prev => ({
+          ...prev,
+          colorsCantDecideHelp: ""
+        }));
+      }
     }
-  };
-
-  const handleCancelColorsHelp = () => {
-    // Revert to saved state instead of clearing
-    setTempShowColorsHelp(savedShowColorsHelp);
-    setTempPrimaryColors(savedPrimaryColors);
-    setTempSecondaryColors(savedSecondaryColors);
-    setTempColorsCantDecideHelp(savedColorsCantDecideHelp);
-  };
-
-  const handleConfirmSelection = () => {
-    // Save current selections
-    setSavedPrimaryColors(tempPrimaryColors);
-    setSavedSecondaryColors(tempSecondaryColors);
-    setSavedShowColorsHelp(tempShowColorsHelp);
-    setSavedColorsCantDecideHelp(tempColorsCantDecideHelp);
+    
+    setShowColorsHelp(!showColorsHelp);
   };
 
   const handleHelpTextChange = (value: string) => {
     const sanitizedValue = sanitizeInput(value);
-    setTempColorsCantDecideHelp(sanitizedValue);
-  };
-
-  // Check if there are unsaved changes
-  const hasUnsavedChanges = () => {
-    return (
-      JSON.stringify(tempPrimaryColors) !== JSON.stringify(savedPrimaryColors) ||
-      JSON.stringify(tempSecondaryColors) !== JSON.stringify(savedSecondaryColors) ||
-      tempShowColorsHelp !== savedShowColorsHelp ||
-      tempColorsCantDecideHelp !== savedColorsCantDecideHelp
-    );
+    setFormData(prev => ({ ...prev, colorsCantDecideHelp: sanitizedValue }));
   };
 
   // Custom styles for dark mode color picker
@@ -176,7 +164,7 @@ export function StepThree({
       </div>
 
       <div className="space-y-6">
-        {!tempShowColorsHelp ? (
+        {!showColorsHelp ? (
           <>
             {/* Color Picker - Always Visible */}
             <div className="flex justify-center">
@@ -198,12 +186,12 @@ export function StepThree({
                 <div className="text-center">
                   <h3 className="text-base font-semibold">{t.visualIdentity.step3.primaryColors}</h3>
                   <p className="text-xs text-muted-foreground">{t.visualIdentity.step3.primaryColorsDesc}</p>
-                  <p className="text-xs text-muted-foreground">({tempPrimaryColors.length}/4) - Min: 2</p>
+                  <p className="text-xs text-muted-foreground">({formData.primaryColors.length}/4) - Min: 2</p>
                 </div>
                 
                 <div className="space-y-2" role="group" aria-labelledby="primary-colors-heading">
                   <h4 id="primary-colors-heading" className="sr-only">Primary Colors List</h4>
-                  {tempPrimaryColors.map((color, index) => (
+                  {formData.primaryColors.map((color, index) => (
                     <div key={index} className="flex items-center gap-2 p-2 border rounded-lg">
                       <div
                         className="w-6 h-6 sm:w-8 sm:h-8 rounded border flex-shrink-0"
@@ -215,7 +203,7 @@ export function StepThree({
                         size="sm"
                         variant="ghost"
                         onClick={() => removeColor(color, 'primary')}
-                        className="h-6 w-6 p-0 flex-shrink-0 hover:bg-red-100 hover:text-red-600"
+                        className="h-6 w-6 p-0 flex-shrink-0"
                         aria-label={`Remove primary color ${color}`}
                       >
                         <X className="h-3 w-3" />
@@ -223,12 +211,12 @@ export function StepThree({
                     </div>
                   ))}
                   
-                  {tempPrimaryColors.length < 4 && (
+                  {formData.primaryColors.length < 4 && (
                     <Button
                       variant="outline"
                       onClick={addColorToPrimary}
                       className="w-full text-xs sm:text-sm"
-                      disabled={tempPrimaryColors.length >= 4 || tempPrimaryColors.includes(currentColor)}
+                      disabled={formData.primaryColors.length >= 4 || formData.primaryColors.includes(currentColor)}
                       aria-label="Add current color to primary colors"
                     >
                       <Palette className="h-4 w-4 mr-2" />
@@ -248,12 +236,12 @@ export function StepThree({
                 <div className="text-center">
                   <h3 className="text-base font-semibold">{t.visualIdentity.step3.secondaryColors}</h3>
                   <p className="text-xs text-muted-foreground">{t.visualIdentity.step3.secondaryColorsDesc}</p>
-                  <p className="text-xs text-muted-foreground">({tempSecondaryColors.length}/4) - Min: 2</p>
+                  <p className="text-xs text-muted-foreground">({formData.secondaryColors.length}/4) - Min: 2</p>
                 </div>
                 
                 <div className="space-y-2" role="group" aria-labelledby="secondary-colors-heading">
                   <h4 id="secondary-colors-heading" className="sr-only">Secondary Colors List</h4>
-                  {tempSecondaryColors.map((color, index) => (
+                  {formData.secondaryColors.map((color, index) => (
                     <div key={index} className="flex items-center gap-2 p-2 border rounded-lg">
                       <div
                         className="w-6 h-6 sm:w-8 sm:h-8 rounded border flex-shrink-0"
@@ -265,7 +253,7 @@ export function StepThree({
                         size="sm"
                         variant="ghost"
                         onClick={() => removeColor(color, 'secondary')}
-                        className="h-6 w-6 p-0 flex-shrink-0 hover:bg-red-100 hover:text-red-600"
+                        className="h-6 w-6 p-0 flex-shrink-0"
                         aria-label={`Remove secondary color ${color}`}
                       >
                         <X className="h-3 w-3" />
@@ -273,12 +261,12 @@ export function StepThree({
                     </div>
                   ))}
                   
-                  {tempSecondaryColors.length < 4 && (
+                  {formData.secondaryColors.length < 4 && (
                     <Button
                       variant="outline"
                       onClick={addColorToSecondary}
                       className="w-full text-xs sm:text-sm"
-                      disabled={tempSecondaryColors.length >= 4 || tempSecondaryColors.includes(currentColor)}
+                      disabled={formData.secondaryColors.length >= 4 || formData.secondaryColors.includes(currentColor)}
                       aria-label="Add current color to secondary colors"
                     >
                       <Palette className="h-4 w-4 mr-2" />
@@ -297,7 +285,7 @@ export function StepThree({
         ) : (
           <div className="max-w-2xl mx-auto">
             <Textarea
-              value={tempColorsCantDecideHelp}
+              value={formData.colorsCantDecideHelp}
               onChange={(e) => handleHelpTextChange(e.target.value)}
               placeholder="Tell us about your brand style, industry, preferred mood, or any color preferences you have..."
               rows={4}
@@ -311,53 +299,24 @@ export function StepThree({
               </p>
             )}
             <p className="text-xs text-muted-foreground mt-1">
-              {tempColorsCantDecideHelp.length}/300 characters
+              {formData.colorsCantDecideHelp.length}/300 characters
             </p>
           </div>
         )}
 
         <div className="text-center">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Button
-              variant="outline"
-              onClick={handleColorsCantDecide}
-              className={`flex items-center gap-2 w-full sm:w-auto text-sm sm:text-base px-4 py-2 ${
-                tempShowColorsHelp ? "ring-2 ring-primary" : ""
-              }`}
-              aria-pressed={tempShowColorsHelp}
-            >
-              <HelpCircle className="h-4 w-4" aria-hidden="true" />
-              <span className="text-center">{t.visualIdentity.step3.helpText}</span>
-            </Button>
-            
-            {tempShowColorsHelp && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleCancelColorsHelp}
-                className="flex items-center gap-1 h-8 px-3 hover:bg-red-100 hover:text-red-600 flex-shrink-0"
-                aria-label="Cancel color help request"
-              >
-                <RotateCcw className="h-3 w-3" />
-                <span className="text-xs">Cancel</span>
-              </Button>
-            )}
-          </div>
+          <Button
+            variant="outline"
+            onClick={handleColorsCantDecide}
+            className={`flex items-center gap-2 w-full sm:w-auto ${
+              showColorsHelp ? "ring-2 ring-primary" : ""
+            }`}
+            aria-pressed={showColorsHelp}
+          >
+            <HelpCircle className="h-4 w-4" aria-hidden="true" />
+            {t.visualIdentity.step3.helpText}
+          </Button>
         </div>
-
-        {/* Confirm/Save button */}
-        {hasUnsavedChanges() && (tempPrimaryColors.length > 0 || tempSecondaryColors.length > 0 || tempShowColorsHelp) && (
-          <div className="flex justify-center mt-4">
-            <Button
-              onClick={handleConfirmSelection}
-              size="sm"
-              className="bg-green-600 hover:bg-green-700 text-white"
-            >
-              <CheckCircle className="h-4 w-4 mr-2" />
-              Confirm Selection
-            </Button>
-          </div>
-        )}
       </div>
     </div>
   );

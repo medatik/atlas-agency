@@ -7,8 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { Type, X } from "lucide-react";
+import { Type } from "lucide-react";
 import { FormData, FormErrors, Translation, FontOption } from '@/lib/types';
 import { sanitizeInput } from '@/lib/validation';
 
@@ -30,14 +29,6 @@ export function StepFour({ t, formData, setFormData, errors }: StepFourProps) {
     setFormData(prev => ({ ...prev, [field]: sanitizedValue }));
   };
 
-  const handleCancelFontSelection = () => {
-    setFormData(prev => ({
-      ...prev,
-      fontPreference: "",
-      customFont: ""
-    }));
-  };
-
   return (
     <div className="space-y-6">
       <div className="text-center space-y-4">
@@ -54,32 +45,19 @@ export function StepFour({ t, formData, setFormData, errors }: StepFourProps) {
 
       <div className="space-y-6 max-w-2xl mx-auto">
         <div>
-          <div className="flex items-center justify-between mb-4">
-            <Label className="text-base font-semibold">
-              {t.visualIdentity.step4.fontPreference}
-            </Label>
-            {formData.fontPreference && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleCancelFontSelection}
-                className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
-                aria-label="Cancel font selection"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
+          <Label className="text-base font-semibold">
+            {t.visualIdentity.step4.fontPreference}
+          </Label>
           <RadioGroup
             value={formData.fontPreference}
             onValueChange={(value) => setFormData(prev => ({ ...prev, fontPreference: value }))}
-            className="space-y-4"
+            className="mt-4 space-y-4"
             aria-describedby={errors.fontPreference ? "fontPreference-error" : undefined}
           >
             {fontPreferences.map((option) => (
               <Card
                 key={option.id}
-                className={`cursor-pointer transition-all duration-200 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 relative ${
+                className={`cursor-pointer transition-all duration-200 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 ${
                   formData.fontPreference === option.id
                     ? "ring-2 ring-primary bg-primary/5"
                     : "hover:bg-muted/50"

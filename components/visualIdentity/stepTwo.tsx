@@ -1,10 +1,10 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Eye, CheckCircle, HelpCircle, X, RotateCcw } from "lucide-react";
+import { Eye, CheckCircle, HelpCircle } from "lucide-react";
 import { FormData, FormErrors, Translation, LogoType } from '@/lib/types';
 import { sanitizeInput } from '@/lib/validation';
 
@@ -16,14 +16,6 @@ interface StepTwoProps {
 }
 
 export function StepTwo({ t, formData, setFormData, errors }: StepTwoProps) {
-  // Temporary state for current selections
-  const [tempLogoType, setTempLogoType] = useState(formData.logoType);
-  const [tempCantDecideHelp, setTempCantDecideHelp] = useState(formData.cantDecideHelp);
-  
-  // Saved state for reverting
-  const [savedLogoType, setSavedLogoType] = useState(formData.logoType);
-  const [savedCantDecideHelp, setSavedCantDecideHelp] = useState(formData.cantDecideHelp);
-
   const logoTypes: LogoType[] = [
     { id: "1", label: t.visualIdentity.logoTypes.wordmark },
     { id: "2", label: t.visualIdentity.logoTypes.lettermark },
@@ -33,40 +25,25 @@ export function StepTwo({ t, formData, setFormData, errors }: StepTwoProps) {
     { id: "6", label: t.visualIdentity.logoTypes.combination },
   ];
 
-  // Update form data when temp state changes
-  useEffect(() => {
+  const handleLogoTypeSelect = (typeId: string) => {
     setFormData(prev => ({
       ...prev,
-      logoType: tempLogoType,
-      cantDecideHelp: tempCantDecideHelp
+      logoType: typeId,
+      cantDecideHelp: "" // Clear help text when selecting a logo type
     }));
-  }, [tempLogoType, tempCantDecideHelp, setFormData]);
-
-  const handleLogoTypeSelect = (typeId: string) => {
-    setTempLogoType(typeId);
-    setTempCantDecideHelp(""); // Clear help text when selecting a logo type
   };
 
   const handleCantDecide = () => {
-    setTempLogoType("cant-decide");
-    setTempCantDecideHelp(tempCantDecideHelp || "");
-  };
-
-  const handleCancelSelection = () => {
-    // Revert to saved state instead of clearing
-    setTempLogoType(savedLogoType);
-    setTempCantDecideHelp(savedCantDecideHelp);
-  };
-
-  const handleConfirmSelection = () => {
-    // Save current selections
-    setSavedLogoType(tempLogoType);
-    setSavedCantDecideHelp(tempCantDecideHelp);
+    setFormData(prev => ({
+      ...prev,
+      logoType: "cant-decide",
+      cantDecideHelp: prev.cantDecideHelp || ""
+    }));
   };
 
   const handleHelpTextChange = (value: string) => {
     const sanitizedValue = sanitizeInput(value);
-    setTempCantDecideHelp(sanitizedValue);
+    setFormData(prev => ({ ...prev, cantDecideHelp: sanitizedValue }));
   };
 
   return (
@@ -87,8 +64,8 @@ export function StepTwo({ t, formData, setFormData, errors }: StepTwoProps) {
         {logoTypes.map((type) => (
           <Card
             key={type.id}
-            className={`cursor-pointer transition-all duration-200 hover:shadow-md focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 relative ${
-              tempLogoType === type.id
+            className={`cursor-pointer transition-all duration-200 hover:shadow-md focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 ${
+              formData.logoType === type.id
                 ? "ring-2 ring-primary bg-primary/5"
                 : "hover:bg-muted/50"
             }`}
@@ -101,7 +78,7 @@ export function StepTwo({ t, formData, setFormData, errors }: StepTwoProps) {
                 handleLogoTypeSelect(type.id);
               }
             }}
-            aria-pressed={tempLogoType === type.id}
+            aria-pressed={formData.logoType === type.id}
             aria-label={`Select ${type.label} logo type`}
           >
             <CardContent className="p-3 sm:p-4 text-center">
@@ -111,22 +88,8 @@ export function StepTwo({ t, formData, setFormData, errors }: StepTwoProps) {
                 </span>
               </div>
               <p className="text-xs sm:text-sm font-medium">{type.label}</p>
-              {tempLogoType === type.id && (
-                <>
-                  <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-primary mx-auto mt-2" aria-hidden="true" />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleCancelSelection();
-                    }}
-                    className="absolute top-2 right-2 h-6 w-6 p-0 hover:bg-red-100 hover:text-red-600"
-                    aria-label="Cancel selection"
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </>
+              {formData.logoType === type.id && (
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-primary mx-auto mt-2" aria-hidden="true" />
               )}
             </CardContent>
           </Card>
@@ -134,37 +97,22 @@ export function StepTwo({ t, formData, setFormData, errors }: StepTwoProps) {
       </div>
 
       <div className="text-center space-y-4 max-w-2xl mx-auto">
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Button
-            variant="outline"
-            onClick={handleCantDecide}
-            className={`flex items-center gap-2 w-full sm:w-auto text-sm sm:text-base px-4 py-2 ${
-              tempLogoType === "cant-decide" ? "ring-2 ring-primary" : ""
-            }`}
-            aria-pressed={tempLogoType === "cant-decide"}
-          >
-            <HelpCircle className="h-4 w-4" aria-hidden="true" />
-            <span className="text-center">{t.visualIdentity.step2.helpText}</span>
-          </Button>
-          
-          {tempLogoType === "cant-decide" && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleCancelSelection}
-              className="flex items-center gap-1 h-8 px-3 hover:bg-red-100 hover:text-red-600 flex-shrink-0"
-              aria-label="Cancel help request"
-            >
-              <RotateCcw className="h-3 w-3" />
-              <span className="text-xs">Cancel</span>
-            </Button>
-          )}
-        </div>
+        <Button
+          variant="outline"
+          onClick={handleCantDecide}
+          className={`flex items-center gap-2 w-full sm:w-auto ${
+            formData.logoType === "cant-decide" ? "ring-2 ring-primary" : ""
+          }`}
+          aria-pressed={formData.logoType === "cant-decide"}
+        >
+          <HelpCircle className="h-4 w-4" aria-hidden="true" />
+          {t.visualIdentity.step2.helpText}
+        </Button>
 
-        {tempLogoType === "cant-decide" && (
+        {formData.logoType === "cant-decide" && (
           <div className="mt-4">
             <Textarea
-              value={tempCantDecideHelp}
+              value={formData.cantDecideHelp}
               onChange={(e) => handleHelpTextChange(e.target.value)}
               placeholder={t.visualIdentity.step2.helpPlaceholder}
               rows={3}
@@ -178,22 +126,8 @@ export function StepTwo({ t, formData, setFormData, errors }: StepTwoProps) {
               </p>
             )}
             <p className="text-xs text-muted-foreground mt-1">
-              {tempCantDecideHelp.length}/300 characters
+              {formData.cantDecideHelp.length}/300 characters
             </p>
-          </div>
-        )}
-
-        {/* Confirm/Save button */}
-        {(tempLogoType !== savedLogoType || tempCantDecideHelp !== savedCantDecideHelp) && tempLogoType && (
-          <div className="flex justify-center mt-4">
-            <Button
-              onClick={handleConfirmSelection}
-              size="sm"
-              className="bg-green-600 hover:bg-green-700 text-white"
-            >
-              <CheckCircle className="h-4 w-4 mr-2" />
-              Confirm Selection
-            </Button>
           </div>
         )}
       </div>
