@@ -6,6 +6,10 @@ export interface Translation {
     contact: string;
     components: string;
   };
+  auth: {
+    signIn: string;
+    signUp: string;
+  };
   hero: {
     title: string;
     subtitle: string;
@@ -47,6 +51,11 @@ export interface Translation {
   components: {
     title: string;
     description: string;
+  };
+  notFound: {
+    title: string;
+    message: string;
+    homeButton: string;
   };
   visualIdentity: {
     welcome: string;

@@ -74,7 +74,7 @@ export function Navigation() {
       
       // We're on the home page, scroll to the section
       const element = document.querySelector(href)
-      if (element) {
+      if (element instanceof HTMLElement) {
         const headerHeight = 80 // Account for fixed header
         const elementPosition = element.offsetTop - headerHeight
         window.scrollTo({ 
@@ -100,22 +100,24 @@ export function Navigation() {
       aria-label="Main navigation"
     >
       <div className="container flex h-16 items-center justify-between">
-        <button
-          onClick={handleLogoClick}
-          className="flex items-center space-x-2 hover:opacity-80 transition-opacity cursor-pointer rtl:space-x-reverse focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md px-2 py-1"
-          aria-label="Go to homepage"
-        >
-          <img src="/icon_red.png" alt="ATLAS Agency Logo" className="h-8 w-8 rounded-full" />
-          <span className="font-bold text-xl hidden sm:inline">ATLAS Agency</span>
-        </button>
+        <div className="flex items-center">
+          <button
+            onClick={handleLogoClick}
+            className="flex items-center space-x-2 hover:opacity-80 transition-opacity cursor-pointer rtl:space-x-reverse focus-visible:ring-1 focus-visible:ring-primary rounded-md px-2 py-1"
+            aria-label="Go to homepage"
+          >
+            <img src="/icon_red.png" alt="ATLAS Agency Logo" className="h-8 w-8 rounded-full" />
+            <span className="font-bold text-xl hidden sm:inline">ATLAS Agency</span>
+          </button>
+        </div>
 
         {/* Desktop Navigation */}
-        <div className={`hidden md:flex items-center space-x-6 ${locale === 'ar' ? 'rtl:space-x-reverse' : ''}`}>
+        <div className={`hidden lg:flex items-center space-x-6 ${locale === 'ar' ? 'rtl:space-x-reverse' : ''}`}>
           {navItems.map((item) => (
             <button
               key={item.href}
               onClick={() => handleNavClick(item.href)}
-              className="text-sm font-medium transition-colors hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full nav-link focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md px-2 py-1"
+              className="text-sm font-medium transition-colors hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full nav-link focus-visible:ring-1 focus-visible:ring-primary rounded-md px-2 py-1"
               aria-label={`Navigate to ${item.label}`}
             >
               {item.label}
@@ -123,19 +125,19 @@ export function Navigation() {
           ))}
         </div>
 
-        <div className="flex items-center space-x-2 rtl:space-x-reverse">
+        <div className="flex items-center gap-2">
           {/* Sign In/Up Buttons - Desktop */}
-          <div className="hidden md:flex items-center space-x-2 mr-2 rtl:space-x-reverse rtl:ml-2 rtl:mr-0">
+          <div className="hidden lg:flex items-center space-x-2 rtl:space-x-reverse">
             <SignInDialog>
-              <Button variant="ghost" size="sm" className="text-sm focus:ring-2 focus:ring-primary focus:ring-offset-2">
+              <Button variant="ghost" size="sm" className="text-sm focus-visible:ring-1 focus-visible:ring-primary">
                 <LogIn className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" aria-hidden="true" />
-                Sign In
+                {t.auth?.signIn || 'Sign In'}
               </Button>
             </SignInDialog>
             <SignUpDialog>
-              <Button size="sm" className="bg-primary hover:bg-primary/90 text-sm focus:ring-2 focus:ring-primary focus:ring-offset-2">
+              <Button size="sm" className="bg-primary hover:bg-primary/90 text-sm focus-visible:ring-1 focus-visible:ring-primary">
                 <UserPlus className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" aria-hidden="true" />
-                Sign Up
+                {t.auth?.signUp || 'Sign Up'}
               </Button>
             </SignUpDialog>
           </div>
@@ -147,7 +149,7 @@ export function Navigation() {
           <Button 
             variant="ghost" 
             size="sm" 
-            className="md:hidden focus:ring-2 focus:ring-primary focus:ring-offset-2" 
+            className="lg:hidden focus-visible:ring-1 focus-visible:ring-primary" 
             onClick={() => setIsOpen(!isOpen)}
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
@@ -163,7 +165,7 @@ export function Navigation() {
         <div 
           id="mobile-menu"
           ref={menuRef}
-          className="md:hidden border-t bg-background/95 backdrop-blur"
+          className="lg:hidden border-t bg-background/95 backdrop-blur"
           role="menu"
           aria-label="Mobile navigation menu"
         >
@@ -172,7 +174,7 @@ export function Navigation() {
               <button
                 key={item.href}
                 onClick={() => handleNavClick(item.href)}
-                className={`block w-full text-left py-2 text-sm font-medium transition-colors hover:text-primary hover:bg-primary/5 rounded-md px-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                className={`block w-full text-left py-2 text-sm font-medium transition-colors hover:text-primary hover:bg-primary/5 rounded-md px-2 focus-visible:ring-1 focus-visible:ring-primary ${
                   locale === 'ar' ? 'text-right' : 'text-left'
                 }`}
                 role="menuitem"
@@ -183,24 +185,24 @@ export function Navigation() {
             ))}
 
             {/* Sign In/Up Buttons - Mobile */}
-            <div className="pt-4 border-t space-y-2">
+            <div className="pt-4 border-t flex flex-col items-center gap-2">
               <SignInDialog>
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="w-full justify-start rtl:justify-end focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  className="w-full max-w-[200px] justify-center focus-visible:ring-1 focus-visible:ring-primary"
                 >
-                  <LogIn className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" aria-hidden="true" />
-                  Sign In
+                  <LogIn className={`h-4 w-4 ${locale === 'ar' ? 'ml-2' : 'mr-2'}`} aria-hidden="true" />
+                  {t.auth?.signIn || 'Sign In'}
                 </Button>
               </SignInDialog>
               <SignUpDialog>
                 <Button 
                   size="sm" 
-                  className="w-full bg-primary hover:bg-primary/90 focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  className="w-full max-w-[200px] bg-primary hover:bg-primary/90 justify-center focus-visible:ring-1 focus-visible:ring-primary"
                 >
-                  <UserPlus className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" aria-hidden="true" />
-                  Sign Up
+                  <UserPlus className={`h-4 w-4 ${locale === 'ar' ? 'ml-2' : 'mr-2'}`} aria-hidden="true" />
+                  {t.auth?.signUp || 'Sign Up'}
                 </Button>
               </SignUpDialog>
             </div>

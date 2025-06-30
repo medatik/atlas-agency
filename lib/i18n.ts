@@ -12,6 +12,10 @@ export const translations: Record<Locale, Translation> = {
       contact: "Contact",
       components: "Components",
     },
+    auth: {
+      signIn: "Sign In",
+      signUp: "Sign Up",
+    },
     hero: {
       title: "ATLAS Agency",
       subtitle: "Visual Identity & Web Development",
@@ -55,6 +59,11 @@ export const translations: Record<Locale, Translation> = {
     components: {
       title: "Component Library",
       description: "Explore our comprehensive collection of reusable components",
+    },
+    notFound: {
+      title: "Page Not Found",
+      message: "Sorry, we couldn't find the page you're looking for. The page might have been moved, deleted, or the URL might be incorrect.",
+      homeButton: "Go Home",
     },
     visualIdentity: {
       welcome: "WELCOME TO",
@@ -143,6 +152,10 @@ export const translations: Record<Locale, Translation> = {
       contact: "Contact",
       components: "Composants",
     },
+    auth: {
+      signIn: "Se Connecter",
+      signUp: "S'inscrire",
+    },
     hero: {
       title: "ATLAS Agence",
       subtitle: "Identité Visuelle & Développement Web",
@@ -189,6 +202,11 @@ export const translations: Record<Locale, Translation> = {
     components: {
       title: "Bibliothèque de Composants",
       description: "Explorez notre collection complète de composants réutilisables",
+    },
+    notFound: {
+      title: "Page Non Trouvée",
+      message: "Désolé, nous n'avons pas trouvé la page que vous recherchez. La page a peut-être été déplacée, supprimée ou l'URL est incorrecte.",
+      homeButton: "Retour à l'Accueil",
     },
     visualIdentity: {
       welcome: "BIENVENUE CHEZ",
@@ -277,6 +295,10 @@ export const translations: Record<Locale, Translation> = {
       contact: "اتصل بنا",
       components: "المكونات",
     },
+    auth: {
+      signIn: "تسجيل الدخول",
+      signUp: "إنشاء حساب",
+    },
     hero: {
       title: "وكالة أطلس",
       subtitle: "الهوية البصرية وتطوير المواقع",
@@ -320,6 +342,11 @@ export const translations: Record<Locale, Translation> = {
     components: {
       title: "مكتبة المكونات",
       description: "استكشف مجموعتنا الشاملة من المكونات القابلة لإعادة الاستخدام",
+    },
+    notFound: {
+      title: "الصفحة غير موجودة",
+      message: "عذراً، لم نتمكن من العثور على الصفحة التي تبحث عنها. ربما تم نقل الصفحة أو حذفها أو أن عنوان URL غير صحيح.",
+      homeButton: "العودة للرئيسية",
     },
     visualIdentity: {
       welcome: "مرحباً بك في",

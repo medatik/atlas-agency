@@ -52,40 +52,37 @@ export function ServicesSection({ t }: ServicesSectionProps) {
 
         <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => (
-            <Card
+            <Card 
               key={index}
               className={`group hover:shadow-xl transition-all duration-300 border-2 hover:border-primary/20 hover:-translate-y-1 
                   bg-card/50 backdrop-blur-sm shadow-md rounded-lg overflow-hidden transform hover:scale-105 flex flex-col h-full focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2`}
             >
-              <div className="flex-1">
-                <CardHeader className="pb-4 rtl:flex rtl:flex-col rtl:justify-between">
+              <div className="flex-1 p-6">
+                <div className="grid gap-6">
                   <div
-                    className={`w-12 h-12 rounded-lg ${service.bgColor} shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+                    className={`w-12 h-12 rounded-lg ${service.bgColor} shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300 rtl:justify-self-end`}
                     aria-hidden="true"
                   >
                     <service.icon className={`h-6 w-6 ${service.color}`} />
                   </div>
-                  <CardTitle className="text-lg sm:text-xl group-hover:text-primary transition-colors duration-300">
-                    {service.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <CardDescription className="text-sm sm:text-base leading-relaxed">
-                    {service.description}
-                  </CardDescription>
-                </CardContent>
-              </div>
-
-              <div className="p-4 sm:p-6 pt-0 mt-auto">
-                <Link href={service.href} aria-label={`Learn more about ${service.title}`}>
-                  <Button
-                    variant="outline"
-                    className="w-full flex items-center justify-center gap-2 hover:bg-primary/10 transition-colors duration-300 text-sm sm:text-base rtl:flex-row-reverse focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                  >
-                    <span>{t.services.buttonText}</span>
-                    <MoveRight className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
-                  </Button>
-                </Link>
+                  <div className="grid gap-3 rtl:text-right">
+                    <CardTitle className="text-lg sm:text-xl group-hover:text-primary transition-colors duration-300">
+                      {service.title}
+                    </CardTitle>
+                    <CardDescription className="text-sm sm:text-base leading-relaxed">
+                      {service.description}
+                    </CardDescription>
+                    <Link href={service.href} aria-label={`Learn more about ${service.title}`}>
+                      <Button
+                        variant="outline"
+                        className="w-full max-w-[80%] mx-auto flex items-center justify-center gap-2 hover:bg-primary/10 transition-colors duration-300 text-sm sm:text-base rtl:flex-row-reverse focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                      >
+                        <span>{t.services.buttonText}</span>
+                        <MoveRight className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
               </div>
             </Card>
           ))}

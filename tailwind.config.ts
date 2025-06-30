@@ -26,7 +26,7 @@ const config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "#8B1538",
           foreground: "hsl(var(--primary-foreground))",
           50: "#fef2f2",
           100: "#fee2e2",
@@ -90,6 +90,10 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-20px)" },
+        },
         "fade-in": {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
@@ -106,6 +110,9 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "float": "float 6s ease-in-out infinite",
+        "float-delayed-2": "float 6s ease-in-out -2s infinite",
+        "float-delayed-4": "float 6s ease-in-out -4s infinite",
         "fade-in": "fade-in 0.5s ease-out",
         "slide-in-from-top": "slide-in-from-top 0.3s ease-out",
         "slide-in-from-bottom": "slide-in-from-bottom 0.3s ease-out",
@@ -117,9 +124,22 @@ const config = {
       fontSize: {
         '2xs': '0.625rem',
       },
+      textShadow: {
+        DEFAULT: '2px 2px 4px rgba(139, 21, 56, 0.1)',
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function({ addUtilities }: { addUtilities: Function }) {
+      const newUtilities = {
+        '.text-shadow': {
+          'text-shadow': '2px 2px 4px rgba(139, 21, 56, 0.1)',
+        },
+      }
+      addUtilities(newUtilities)
+    },
+  ],
 } satisfies Config
 
 export default config
