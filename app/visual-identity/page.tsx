@@ -57,6 +57,55 @@ export default function VisualIdentityPage() {
 
   const totalSteps = 5
 
+  // Load saved data on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem('visualIdentityFormData')
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData)
+        setFormData(parsedData)
+        
+        // Show toast notification for loaded data
+        toast({
+          title: "Previous data loaded",
+          description: "Your previously saved information has been restored.",
+        })
+      } catch (error) {
+        console.error('Error loading saved data:', error)
+      }
+    }
+  }, [toast])
+
+  // Save data whenever formData changes
+  useEffect(() => {
+    if (formData.brandName || formData.brandDescription) {
+      localStorage.setItem('visualIdentityFormData', JSON.stringify(formData))
+    }
+  }, [formData])
+
+  // Clear saved data function
+  const clearSavedData = () => {
+    localStorage.removeItem('visualIdentityFormData')
+    setFormData({
+      brandName: "",
+      brandDescription: "",
+      logoType: "",
+      cantDecideHelp: "",
+      primaryColors: [],
+      secondaryColors: [],
+      colorsCantDecideHelp: "",
+      fontPreference: "",
+      customFont: "",
+      additionalRequests: "",
+      projectTimeline: "",
+      communicationPreference: "",
+    })
+    toast({
+      title: "Data cleared",
+      description: "All saved information has been removed.",
+    })
+  }
+
   // Validation function for current step
   const validateCurrentStep = (): boolean => {
     let stepErrors: FormErrors = {}
@@ -97,8 +146,8 @@ export default function VisualIdentityPage() {
   const handleNext = async () => {
     if (!validateCurrentStep()) {
       toast({
-        title: "Please fix the errors",
-        description: "Some required fields are missing or invalid.",
+        title: "Required fields missing",
+        description: "Please complete all required fields before continuing.",
         variant: "destructive",
       })
       return
@@ -129,8 +178,8 @@ export default function VisualIdentityPage() {
   const handleSubmit = async () => {
     if (!validateCurrentStep()) {
       toast({
-        title: "Please fix the errors",
-        description: "Some required fields are missing or invalid.",
+        title: "Incomplete information",
+        description: "Please complete all required fields to submit your project.",
         variant: "destructive",
       })
       return
@@ -148,6 +197,9 @@ export default function VisualIdentityPage() {
         title: "Project submitted successfully!",
         description: "We'll review your requirements and get back to you soon.",
       })
+      
+      // Clear saved data after successful submission
+      localStorage.removeItem('visualIdentityFormData')
       
       setShowSummary(true)
       scrollToTop()

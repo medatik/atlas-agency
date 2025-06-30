@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Palette, X, HelpCircle } from "lucide-react";
@@ -31,6 +31,13 @@ export function StepThree({
   setShowColorsHelp 
 }: StepThreeProps) {
   const { theme } = useTheme();
+
+  // Store the previous state when "Can't Decide" is clicked
+  const [previousState, setPreviousState] = useState<{
+    primaryColors: string[];
+    secondaryColors: string[];
+    colorsCantDecideHelp: string;
+  } | null>(null);
 
   const handleColorChange = (color: any) => {
     setCurrentColor(color.hex);
@@ -63,8 +70,14 @@ export function StepThree({
   };
 
   const handleColorsCantDecide = () => {
-    setShowColorsHelp(!showColorsHelp);
     if (!showColorsHelp) {
+      // Store current state before switching to help mode
+      setPreviousState({
+        primaryColors: formData.primaryColors,
+        secondaryColors: formData.secondaryColors,
+        colorsCantDecideHelp: formData.colorsCantDecideHelp
+      });
+      
       // Clear colors when choosing help
       setFormData(prev => ({
         ...prev,
@@ -73,12 +86,24 @@ export function StepThree({
         colorsCantDecideHelp: prev.colorsCantDecideHelp || ""
       }));
     } else {
-      // Clear help text when going back to manual selection
-      setFormData(prev => ({
-        ...prev,
-        colorsCantDecideHelp: ""
-      }));
+      // Restore previous state when canceling help
+      if (previousState) {
+        setFormData(prev => ({
+          ...prev,
+          primaryColors: previousState.primaryColors,
+          secondaryColors: previousState.secondaryColors,
+          colorsCantDecideHelp: previousState.colorsCantDecideHelp
+        }));
+      } else {
+        // Fallback: clear help text when going back to manual selection
+        setFormData(prev => ({
+          ...prev,
+          colorsCantDecideHelp: ""
+        }));
+      }
     }
+    
+    setShowColorsHelp(!showColorsHelp);
   };
 
   const handleHelpTextChange = (value: string) => {

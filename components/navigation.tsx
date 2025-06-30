@@ -142,6 +142,20 @@ export function Navigation() {
             </SignUpDialog>
           </div>
 
+          {/* Medium screen navigation - show some nav items */}
+          <div className={`hidden md:flex lg:hidden items-center space-x-4 mr-2 ${locale === 'ar' ? 'rtl:space-x-reverse rtl:ml-2 rtl:mr-0' : ''}`}>
+            {navItems.slice(0, 3).map((item) => (
+              <button
+                key={item.href}
+                onClick={() => handleNavClick(item.href)}
+                className="text-xs font-medium transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md px-2 py-1"
+                aria-label={`Navigate to ${item.label}`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
           <LanguageToggle />
           <ThemeToggle />
 
