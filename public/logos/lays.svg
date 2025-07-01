@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60">
+  <path d="M10,30 C10,15 25,5 50,5 C75,5 90,15 90,30 C90,45 75,55 50,55 C25,55 10,45 10,30 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="50" y="35" text-anchor="middle" font-family="Arial" font-style="italic" font-weight="bold" font-size="24" fill="currentColor">LAY'S</text>
+  <path d="M20,25 C20,25 35,15 50,15 C65,15 80,25 80,25" fill="none" stroke="currentColor" stroke-width="1.5"/>
+</svg> 

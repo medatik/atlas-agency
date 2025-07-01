@@ -84,7 +84,7 @@ export const translations: Record<Locale, Translation> = {
       step2: {
         title: "LET'S START BY THE LOGO",
         subtitle: "CHOOSE WHAT TYPE OF LOGO YOU WANT",
-        helpText: "CAN'T DECIDE? LET ATLAS AI HELP YOU",
+        helpText: "Can't decide? Let Atlas AI help you",
         helpPlaceholder: "Tell us about your brand style, industry, or any preferences you have...",
       },
       logoTypes: {
@@ -102,7 +102,7 @@ export const translations: Record<Locale, Translation> = {
         primaryColorsDesc: "Main colors that represent your brand",
         secondaryColors: "SECONDARY COLORS", 
         secondaryColorsDesc: "Supporting colors for accents and variety",
-        helpText: "CAN'T DECIDE? LET ATLAS AI HELP YOU",
+        helpText: "Can't decide? Let Atlas AI help you",
         colorPickerText: "Select colors that represent your brand's personality and values",
       },
       step4: {
@@ -227,7 +227,7 @@ export const translations: Record<Locale, Translation> = {
       step2: {
         title: "COMMENÇONS PAR LE LOGO",
         subtitle: "CHOISISSEZ LE TYPE DE LOGO QUE VOUS VOULEZ",
-        helpText: "VOUS N'ARRIVEZ PAS À DÉCIDER ? LAISSEZ ATLAS AI VOUS AIDER",
+        helpText: "Vous n'arrivez pas à décider ? Laissez Atlas AI vous aider",
         helpPlaceholder: "Parlez-nous du style de votre marque, de votre secteur ou de vos préférences...",
       },
       logoTypes: {
@@ -245,7 +245,7 @@ export const translations: Record<Locale, Translation> = {
         primaryColorsDesc: "Couleurs principales qui représentent votre marque",
         secondaryColors: "COULEURS SECONDAIRES",
         secondaryColorsDesc: "Couleurs de support pour les accents et la variété",
-        helpText: "VOUS N'ARRIVEZ PAS À DÉCIDER ? LAISSEZ ATLAS AI VOUS AIDER",
+        helpText: "Vous n'arrivez pas à décider ? Laissez Atlas AI vous aider",
         colorPickerText: "Sélectionnez des couleurs qui représentent la personnalité et les valeurs de votre marque",
       },
       step4: {

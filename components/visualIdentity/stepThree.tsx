@@ -305,17 +305,31 @@ export function StepThree({
         )}
 
         <div className="text-center">
-          <Button
-            variant="outline"
-            onClick={handleColorsCantDecide}
-            className={`flex items-center gap-2 w-full sm:w-auto ${
-              showColorsHelp ? "ring-2 ring-primary" : ""
-            }`}
-            aria-pressed={showColorsHelp}
-          >
-            <HelpCircle className="h-4 w-4" aria-hidden="true" />
-            {t.visualIdentity.step3.helpText}
-          </Button>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
+            <Button
+              variant="outline"
+              onClick={handleColorsCantDecide}
+              className={`flex items-center gap-2 w-full sm:w-auto ${
+                showColorsHelp ? "bg-muted" : ""
+              }`}
+              aria-pressed={showColorsHelp}
+            >
+              <HelpCircle className="h-4 w-4" aria-hidden="true" />
+              {t.visualIdentity.step3.helpText}
+            </Button>
+            
+            {showColorsHelp && (
+              <Button
+                variant="ghost"
+                onClick={handleColorsCantDecide}
+                className="flex items-center gap-2 w-full sm:w-auto text-destructive hover:text-destructive"
+                aria-label="Cancel help mode"
+              >
+                <X className="h-4 w-4" aria-hidden="true" />
+                Cancel
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>
