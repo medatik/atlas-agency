@@ -134,7 +134,12 @@ export function StepTwo({ t, formData, setFormData, errors }: StepTwoProps) {
               <Label className="text-sm font-medium">
                 Choose a template <span className="text-red-500" aria-label="required">*</span>
               </Label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+              <RadioGroup
+                value={formData.selectedTemplate}
+                onValueChange={(value) => setFormData(prev => ({ ...prev, selectedTemplate: value }))}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4"
+                aria-describedby={errors.selectedTemplate ? "selectedTemplate-error" : undefined}
+              >
                 {templates.map((template) => (
                   <Card
                     key={template.id}
@@ -160,8 +165,6 @@ export function StepTwo({ t, formData, setFormData, errors }: StepTwoProps) {
                             <RadioGroupItem 
                               value={template.id} 
                               id={`template-${template.id}`}
-                              checked={formData.selectedTemplate === template.id}
-                              onChange={() => setFormData(prev => ({ ...prev, selectedTemplate: template.id }))}
                             />
                             <Button
                               variant="outline"
@@ -181,7 +184,7 @@ export function StepTwo({ t, formData, setFormData, errors }: StepTwoProps) {
                     </CardContent>
                   </Card>
                 ))}
-              </div>
+              </RadioGroup>
               {errors.selectedTemplate && (
                 <p className="text-sm text-destructive mt-2" role="alert">
                   {errors.selectedTemplate}

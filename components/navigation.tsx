@@ -20,7 +20,7 @@ export function Navigation() {
     { href: "#services", label: t.nav.services },
     { href: "#about", label: t.nav.about },
     { href: "#contact", label: t.nav.contact },
-    { href: "/components", label: t.nav.components },
+    // { href: "/components", label: t.nav.components },
   ]
 
   // Focus management for mobile menu
