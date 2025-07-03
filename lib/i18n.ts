@@ -85,7 +85,89 @@ export const translations: Record<Locale, Translation> = {
         title: "LET'S START BY THE LOGO",
         subtitle: "CHOOSE WHAT TYPE OF LOGO YOU WANT",
         helpText: "Can't decide? Let Atlas AI help you",
+        cancelHelp: "Cancel help request",
+        cancel: "Cancel",
         helpPlaceholder: "Tell us about your brand style, industry, or any preferences you have...",
+        logoInfo: "Click the help icon on any card to learn more about that logo type",
+        logoTypes: {
+          symbols: {
+            label: "Symbols",
+            description: "A symbol-based logo that represents your brand through a distinctive mark.",
+            advantages: [
+              "You can create multiple configurations, known as lockups, allowing for greater flexibility",
+              "Symbols work more effectively at smaller sizes than typography-based designs",
+              "Symbols transcend language barriers, enabling the use of consistent images worldwide"
+            ],
+            disadvantages: [
+              "You'll immediately know the business name when you first see a typography based design",
+              "It will have no meaning until people have repeatedly seen the new symbol",
+              "If you want the brand to be recognized by a symbol, like Nike, it can be a very costly and time-consuming pursuit"
+            ]
+          },
+          monograms: {
+            label: "Monograms & Letterforms",
+            description: "A design based on letters and monograms that creates a unique visual identity.",
+            advantages: [
+              "It's quick and easy to explore ideas. Monograms and letterforms rely on simple shapes",
+              "A monogram or lettermark will work more effectively in smaller sizes than a wordmark",
+              "You can create multiple lockups for greater versatility"
+            ],
+            disadvantages: [
+              "A Monogram isn't always ideal if the company is international",
+              "When dealing with individual letters, creating an original mark can be challenging"
+            ]
+          },
+          wordmarks: {
+            label: "Wordmarks & Lettermarks",
+            description: "A text-based logo that uses typography to create a distinctive brand mark.",
+            advantages: [
+              "You instantly know the company name",
+              "Wordmarks and Lettermarks are often quicker and easier to design"
+            ],
+            disadvantages: [
+              "They're not ideal for long names",
+              "They're often not distinct enough to be memorable"
+            ]
+          },
+          combination: {
+            label: "Combination Marks",
+            description: "A logo that combines both text and symbols into one unified design.",
+            advantages: [
+              "They can be distinct and memorable",
+              "You instantly know the company name",
+              "They ensure a consistent global identity"
+            ],
+            disadvantages: [
+              "The symbol and the typography are mixed in most cases, so the logo can only be configured in a single way"
+            ]
+          },
+          emblems: {
+            label: "Emblems, Crests & Badges",
+            description: "A traditional or badge-style design that combines imagery and text in a unified symbol.",
+            advantages: [
+              "Their classic appearance can convey a sense of unity and prestige",
+              "They can include several elements to tell a story"
+            ],
+            disadvantages: [
+              "They have limited versatility and are difficult to reproduce in small sizes",
+              "Their design can be challenging due to complex details",
+              "It can be hard to stand out in a market where many emblem logos are already used"
+            ]
+          },
+          mascots: {
+            label: "Mascots",
+            description: "A character-based logo that gives your brand a friendly, approachable personality.",
+            advantages: [
+              "They can give a brand a lot of character and personality",
+              "They help to build a stronger relationship with customers",
+              "They can be easily separated from the logo for marketing"
+            ],
+            disadvantages: [
+              "They can be time-consuming to create",
+              "The mascot may appeal to some but offend others across cultures"
+            ]
+          }
+        }
       },
       logoTypes: {
         wordmark: "Wordmark",
@@ -143,6 +225,45 @@ export const translations: Record<Locale, Translation> = {
         optionsSelected: "options selected",
       },
     },
+    toast: {
+      previousData: {
+        title: "Previous data loaded",
+        description: "Your previously saved information has been restored."
+      },
+      requiredFields: {
+        title: "Required fields missing",
+        description: "Please complete all required fields before continuing."
+      },
+      incomplete: {
+        title: "Incomplete information",
+        description: "Please complete all required fields to submit your project."
+      },
+      success: {
+        title: "Project submitted successfully!",
+        description: "We'll review your requirements and get back to you soon."
+      },
+      error: {
+        title: "Submission failed",
+        description: "Something went wrong. Please try again."
+      },
+      dataSaved: {
+        title: "Data saved",
+        description: "Your information has been saved successfully."
+      }
+    },
+    footer: {
+      description: "Creating stunning visual identities and modern websites for businesses worldwide.",
+      services: "Services",
+      company: "Company",
+      support: "Support",
+      ourTeam: "Our Team",
+      careers: "Careers",
+      blog: "Blog",
+      faq: "FAQ",
+      privacyPolicy: "Privacy Policy",
+      termsOfService: "Terms of Service",
+      copyright: "© 2024 ATLAS Agency. All rights reserved."
+    }
   },
   fr: {
     nav: {
@@ -226,9 +347,91 @@ export const translations: Record<Locale, Translation> = {
       },
       step2: {
         title: "COMMENÇONS PAR LE LOGO",
-        subtitle: "CHOISISSEZ LE TYPE DE LOGO QUE VOUS VOULEZ",
-        helpText: "Vous n'arrivez pas à décider ? Laissez Atlas AI vous aider",
-        helpPlaceholder: "Parlez-nous du style de votre marque, de votre secteur ou de vos préférences...",
+        subtitle: "CHOISISSEZ LE TYPE DE LOGO QUE VOUS SOUHAITEZ",
+        helpText: "Indécis ? Laissez Atlas AI vous aider",
+        cancelHelp: "Annuler la demande d'aide",
+        cancel: "Annuler",
+        helpPlaceholder: "Parlez-nous du style de votre marque, de votre secteur d'activité ou de vos préférences...",
+        logoInfo: "Cliquez sur l'icône d'aide de chaque carte pour en savoir plus sur ce type de logo",
+        logoTypes: {
+          symbols: {
+            label: "Symboles",
+            description: "Un logo basé sur un symbole qui représente votre marque par une marque distinctive.",
+            advantages: [
+              "Vous pouvez créer plusieurs configurations, permettant une plus grande flexibilité",
+              "Les symboles fonctionnent plus efficacement en petite taille que les designs typographiques",
+              "Les symboles transcendent les barrières linguistiques"
+            ],
+            disadvantages: [
+              "Le nom de l'entreprise n'est pas immédiatement visible",
+              "Il n'aura aucune signification jusqu'à ce que les gens l'aient vu plusieurs fois",
+              "Établir la reconnaissance peut être coûteux et prendre du temps"
+            ]
+          },
+          monograms: {
+            label: "Monogrammes et Lettres",
+            description: "Un design basé sur des lettres et des monogrammes qui crée une identité visuelle unique.",
+            advantages: [
+              "Rapide et facile à explorer",
+              "Efficace en petite taille",
+              "Permet plusieurs configurations"
+            ],
+            disadvantages: [
+              "Pas idéal pour une entreprise internationale",
+              "Création d'une marque originale difficile"
+            ]
+          },
+          wordmarks: {
+            label: "Logotypes",
+            description: "Un logo textuel qui utilise la typographie pour créer une marque distinctive.",
+            advantages: [
+              "Nom de l'entreprise immédiatement visible",
+              "Conception rapide et facile"
+            ],
+            disadvantages: [
+              "Pas adapté aux noms longs",
+              "Peut manquer de caractère distinctif"
+            ]
+          },
+          combination: {
+            label: "Marques Combinées",
+            description: "Un logo qui combine texte et symboles dans un design unifié.",
+            advantages: [
+              "Distinctif et mémorable",
+              "Nom de l'entreprise visible",
+              "Identité globale cohérente"
+            ],
+            disadvantages: [
+              "Configuration unique limitant la flexibilité"
+            ]
+          },
+          emblems: {
+            label: "Emblèmes et Écussons",
+            description: "Un design traditionnel qui combine images et texte.",
+            advantages: [
+              "Apparence classique et prestigieuse",
+              "Riche en éléments narratifs"
+            ],
+            disadvantages: [
+              "Difficile à reproduire en petit format",
+              "Conception complexe",
+              "Différenciation difficile"
+            ]
+          },
+          mascots: {
+            label: "Mascottes",
+            description: "Un logo avec un personnage donnant une personnalité à votre marque.",
+            advantages: [
+              "Forte personnalité de marque",
+              "Connexion émotionnelle avec les clients",
+              "Versatile en marketing"
+            ],
+            disadvantages: [
+              "Long à créer",
+              "Risques culturels"
+            ]
+          }
+        }
       },
       logoTypes: {
         wordmark: "Logo-type",
@@ -286,6 +489,45 @@ export const translations: Record<Locale, Translation> = {
         optionsSelected: "options sélectionnées",
       },
     },
+    toast: {
+      previousData: {
+        title: "Données précédentes chargées",
+        description: "Vos informations précédemment sauvegardées ont été restaurées."
+      },
+      requiredFields: {
+        title: "Champs obligatoires manquants",
+        description: "Veuillez remplir tous les champs obligatoires avant de continuer."
+      },
+      incomplete: {
+        title: "Informations incomplètes",
+        description: "Veuillez remplir tous les champs obligatoires pour soumettre votre projet."
+      },
+      success: {
+        title: "Projet soumis avec succès !",
+        description: "Nous examinerons vos besoins et vous recontacterons bientôt."
+      },
+      error: {
+        title: "Échec de la soumission",
+        description: "Une erreur s'est produite. Veuillez réessayer."
+      },
+      dataSaved: {
+        title: "Données sauvegardées",
+        description: "Vos informations ont été sauvegardées avec succès."
+      }
+    },
+    footer: {
+      description: "Création d'identités visuelles et de sites web modernes pour les entreprises du monde entier.",
+      services: "Services",
+      company: "Entreprise",
+      support: "Support",
+      ourTeam: "Notre Équipe",
+      careers: "Carrières",
+      blog: "Blog",
+      faq: "FAQ",
+      privacyPolicy: "Politique de Confidentialité",
+      termsOfService: "Conditions d'Utilisation",
+      copyright: "© 2024 ATLAS Agency. Tous droits réservés."
+    }
   },
   ar: {
     nav: {
@@ -367,16 +609,90 @@ export const translations: Record<Locale, Translation> = {
       step2: {
         title: "لنبدأ بالشعار",
         subtitle: "اختر نوع الشعار الذي تريده",
-        helpText: "لا تستطيع أن تقرر؟ دع أطلس الذكي يساعدك",
-        helpPlaceholder: "أخبرنا عن أسلوب علامتك التجارية أو صناعتك أو أي تفضيلات لديك...",
-      },
-      logoTypes: {
-        wordmark: "شعار نصي",
-        lettermark: "شعار حروف",
-        pictorial: "شعار تصويري",
-        abstract: "شعار مجرد",
-        mascot: "شعار تميمة",
-        combination: "شعار مركب",
+        helpText: "متردد؟ دع Atlas AI يساعدك",
+        cancelHelp: "إلغاء طلب المساعدة",
+        cancel: "إلغاء",
+        helpPlaceholder: "أخبرنا عن أسلوب علامتك التجارية وصناعتك وتفضيلاتك...",
+        logoInfo: "انقر على أيقونة المساعدة في أي بطاقة لمعرفة المزيد عن نوع الشعار",
+        logoTypes: {
+          symbols: {
+            label: "الرموز",
+            description: "شعار قائم على رمز يمثل علامتك التجارية بعلامة مميزة.",
+            advantages: [
+              "إمكانية إنشاء تكوينات متعددة",
+              "فعال في الأحجام الصغيرة",
+              "يتجاوز حواجز اللغة"
+            ],
+            disadvantages: [
+              "اسم الشركة غير مرئي مباشرة",
+              "يحتاج وقت للاعتراف به",
+              "بناء التعرف قد يكون مكلفاً"
+            ]
+          },
+          monograms: {
+            label: "المونوغرام والحروف",
+            description: "تصميم قائم على الحروف يخلق هوية بصرية فريدة.",
+            advantages: [
+              "سريع وسهل التصميم",
+              "فعال في الأحجام الصغيرة",
+              "مرونة في التكوينات"
+            ],
+            disadvantages: [
+              "غير مثالي للشركات الدولية",
+              "صعوبة خلق تصميم أصلي"
+            ]
+          },
+          wordmarks: {
+            label: "الكلمات",
+            description: "شعار نصي يستخدم الخط لإنشاء علامة مميزة.",
+            advantages: [
+              "وضوح اسم الشركة",
+              "سهولة التصميم"
+            ],
+            disadvantages: [
+              "غير مناسب للأسماء الطويلة",
+              "قد يفتقر للتميز"
+            ]
+          },
+          combination: {
+            label: "العلامات المركبة",
+            description: "شعار يجمع بين النص والرموز.",
+            advantages: [
+              "مميز وسهل التذكر",
+              "وضوح اسم الشركة",
+              "هوية متناسقة"
+            ],
+            disadvantages: [
+              "مرونة محدودة في التكوين"
+            ]
+          },
+          emblems: {
+            label: "الشعارات والأختام",
+            description: "تصميم تقليدي يجمع الصور والنص.",
+            advantages: [
+              "مظهر كلاسيكي وفخم",
+              "غني بالعناصر القصصية"
+            ],
+            disadvantages: [
+              "صعب التصغير",
+              "تصميم معقد",
+              "صعوبة التمييز"
+            ]
+          },
+          mascots: {
+            label: "التمائم",
+            description: "شعار بشخصية تمنح علامتك التجارية شخصية ودية.",
+            advantages: [
+              "شخصية قوية للعلامة",
+              "تواصل عاطفي مع العملاء",
+              "مرونة في التسويق"
+            ],
+            disadvantages: [
+              "يستغرق وقتاً طويلاً",
+              "مخاطر ثقافية"
+            ]
+          }
+        }
       },
       step3: {
         title: "الآن الألوان",
@@ -426,6 +742,19 @@ export const translations: Record<Locale, Translation> = {
         optionsSelected: "خيارات مختارة",
       },
     },
+    footer: {
+      description: "إنشاء هويات بصرية مذهلة ومواقع ويب حديثة للشركات في جميع أنحاء العالم.",
+      services: "الخدمات",
+      company: "الشركة",
+      support: "الدعم",
+      ourTeam: "فريقنا",
+      careers: "الوظائف",
+      blog: "المدونة",
+      faq: "الأسئلة الشائعة",
+      privacyPolicy: "سياسة الخصوصية",
+      termsOfService: "شروط الخدمة",
+      copyright: "© 2024 وكالة أطلس. جميع الحقوق محفوظة."
+    }
   },
 };
 

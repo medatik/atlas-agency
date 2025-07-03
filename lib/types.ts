@@ -6,9 +6,48 @@ export interface Translation {
     contact: string;
     components: string;
   };
+  footer: {
+    description: string;
+    services: string;
+    company: string;
+    support: string;
+    ourTeam: string;
+    careers: string;
+    blog: string;
+    faq: string;
+    privacyPolicy: string;
+    termsOfService: string;
+    copyright: string;
+  };
   auth: {
     signIn: string;
     signUp: string;
+  };
+  toast: {
+    previousData: {
+      title: string;
+      description: string;
+    };
+    requiredFields: {
+      title: string;
+      description: string;
+    };
+    incomplete: {
+      title: string;
+      description: string;
+    };
+    success: {
+      title: string;
+      description: string;
+    };
+    error: {
+      title: string;
+      description: string;
+    };
+    dataSaved: {
+      title: string;
+      description: string;
+    };
   };
   hero: {
     title: string;
@@ -77,15 +116,48 @@ export interface Translation {
       title: string;
       subtitle: string;
       helpText: string;
+      cancelHelp: string;
+      cancel: string;
       helpPlaceholder: string;
-    };
-    logoTypes: {
-      wordmark: string;
-      lettermark: string;
-      pictorial: string;
-      abstract: string;
-      mascot: string;
-      combination: string;
+      logoInfo: string;
+      logoTypes: {
+        symbols: {
+          label: string;
+          description: string;
+          advantages: string[];
+          disadvantages: string[];
+        };
+        monograms: {
+          label: string;
+          description: string;
+          advantages: string[];
+          disadvantages: string[];
+        };
+        wordmarks: {
+          label: string;
+          description: string;
+          advantages: string[];
+          disadvantages: string[];
+        };
+        combination: {
+          label: string;
+          description: string;
+          advantages: string[];
+          disadvantages: string[];
+        };
+        emblems: {
+          label: string;
+          description: string;
+          advantages: string[];
+          disadvantages: string[];
+        };
+        mascots: {
+          label: string;
+          description: string;
+          advantages: string[];
+          disadvantages: string[];
+        };
+      };
     };
     step3: {
       title: string;
@@ -156,10 +228,10 @@ export interface FormErrors {
   [key: string]: string;
 }
 
-export interface LogoType {
-  id: string;
+export type LogoType = {
+  id: "symbols" | "monograms" | "wordmarks" | "combination" | "emblems" | "mascots" | "cant-decide";
   label: string;
-}
+};
 
 export interface FontOption {
   id: string;

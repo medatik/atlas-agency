@@ -17,12 +17,12 @@ interface ProjectSummaryProps {
 
 export function ProjectSummary({ t, formData, setShowSummary, showColorsHelp }: ProjectSummaryProps) {
   const logoTypes: LogoType[] = [
-    { id: "1", label: t.visualIdentity.logoTypes.wordmark },
-    { id: "2", label: t.visualIdentity.logoTypes.lettermark },
-    { id: "3", label: t.visualIdentity.logoTypes.pictorial },
-    { id: "4", label: t.visualIdentity.logoTypes.abstract },
-    { id: "5", label: t.visualIdentity.logoTypes.mascot },
-    { id: "6", label: t.visualIdentity.logoTypes.combination },
+    { id: "symbols", label: t.visualIdentity.step2.logoTypes.symbols.label },
+    { id: "monograms", label: t.visualIdentity.step2.logoTypes.monograms.label },
+    { id: "wordmarks", label: t.visualIdentity.step2.logoTypes.wordmarks.label },
+    { id: "combination", label: t.visualIdentity.step2.logoTypes.combination.label },
+    { id: "emblems", label: t.visualIdentity.step2.logoTypes.emblems.label },
+    { id: "mascots", label: t.visualIdentity.step2.logoTypes.mascots.label },
   ];
 
   const fontPreferences: FontOption[] = [

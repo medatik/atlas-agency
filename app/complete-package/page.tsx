@@ -48,6 +48,7 @@ export default function CompletePackagePage() {
   const [currentColor, setCurrentColor] = useState("#ffffff")
   const [showColorsHelp, setShowColorsHelp] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)  // New state for save feedback
   const [errors, setErrors] = useState<CompletePackageFormErrors>({})
   
   const [formData, setFormData] = useState<CompletePackageFormData>({
@@ -107,19 +108,25 @@ export default function CompletePackagePage() {
         setFormData(parsedData)
         
         toast({
-          title: "Previous data loaded",
-          description: "Your previously saved information has been restored.",
+          title: t.toast.previousData.title,
+          description: t.toast.previousData.description,
         })
       } catch (error) {
         console.error('Error loading saved data:', error)
       }
     }
-  }, [toast])
+  }, [toast, t])
 
   // Save data whenever formData changes
   useEffect(() => {
     if (formData.businessName || formData.businessDescription) {
-      localStorage.setItem('completePackageFormData', JSON.stringify(formData))
+      setIsSaving(true)
+      const saveTimeout = setTimeout(() => {
+        localStorage.setItem('completePackageFormData', JSON.stringify(formData))
+        setIsSaving(false)
+      }, 500) // Debounce save
+      
+      return () => clearTimeout(saveTimeout)
     }
   }, [formData])
 
@@ -178,8 +185,8 @@ export default function CompletePackagePage() {
   const handleNext = async () => {
     if (!validateCurrentStep()) {
       toast({
-        title: "Required fields missing",
-        description: "Please complete all required fields before continuing.",
+        title: t.toast.requiredFields.title,
+        description: t.toast.requiredFields.description,
         variant: "destructive",
       })
       return
@@ -210,8 +217,8 @@ export default function CompletePackagePage() {
   const handleSubmit = async () => {
     if (!validateCurrentStep()) {
       toast({
-        title: "Incomplete information",
-        description: "Please complete all required fields to submit your project.",
+        title: t.toast.incomplete.title,
+        description: t.toast.incomplete.description,
         variant: "destructive",
       })
       return
@@ -226,8 +233,8 @@ export default function CompletePackagePage() {
       console.log('Form submitted:', formData)
       
       toast({
-        title: "Project submitted successfully!",
-        description: "We'll review your requirements and get back to you soon.",
+        title: t.toast.success.title,
+        description: t.toast.success.description,
       })
       
       // Clear saved data after successful submission
@@ -237,8 +244,8 @@ export default function CompletePackagePage() {
       scrollToTop()
     } catch (error) {
       toast({
-        title: "Submission failed",
-        description: "Something went wrong. Please try again.",
+        title: t.toast.error.title,
+        description: t.toast.error.description,
         variant: "destructive",
       })
     } finally {
@@ -343,13 +350,20 @@ export default function CompletePackagePage() {
             <div className="mb-8" role="progressbar" aria-valuenow={currentStep} aria-valuemin={1} aria-valuemax={totalSteps}>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium">Progress</span>
-                <span className="text-sm text-muted-foreground">
-                  {currentStep} / {totalSteps}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    {currentStep} / {totalSteps}
+                  </span>
+                  {isSaving && (
+                    <span className="text-xs text-muted-foreground animate-pulse">
+                      Saving...
+                    </span>
+                  )}
+                </div>
               </div>
               <div className="w-full bg-muted rounded-full h-2">
                 <div
-                  className="bg-primary h-2 rounded-full transition-all duration-300"
+                  className="bg-primary h-2 rounded-full transition-all duration-300 ease-in-out"
                   style={{ width: `${(currentStep / totalSteps) * 100}%` }}
                   aria-label={`Progress: ${currentStep} of ${totalSteps} steps completed`}
                 />
@@ -357,9 +371,11 @@ export default function CompletePackagePage() {
             </div>
 
             {/* Main Content */}
-            <Card className="mb-8">
+            <Card className="mb-8 transition-all duration-300 ease-in-out">
               <CardContent className="p-4 sm:p-6 md:p-8">
-                {renderStepContent()}
+                <div className="transition-opacity duration-300 ease-in-out">
+                  {renderStepContent()}
+                </div>
               </CardContent>
             </Card>
 
@@ -369,7 +385,7 @@ export default function CompletePackagePage() {
                 variant="outline"
                 onClick={handlePrevious}
                 disabled={currentStep === 1 || isLoading}
-                className="flex items-center gap-2 w-full sm:w-auto focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                className="flex items-center gap-2 w-full sm:w-auto focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200"
                 aria-label="Go to previous step"
               >
                 <ArrowLeft className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
@@ -380,7 +396,7 @@ export default function CompletePackagePage() {
                 <Button
                   onClick={handleNext}
                   disabled={isLoading}
-                  className="flex items-center gap-2 bg-primary hover:bg-primary/90 w-full sm:w-auto focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  className="flex items-center gap-2 bg-primary hover:bg-primary/90 w-full sm:w-auto focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200"
                   aria-label="Go to next step"
                 >
                   NEXT STEP
@@ -390,7 +406,7 @@ export default function CompletePackagePage() {
                 <Button
                   onClick={handleSubmit}
                   disabled={isLoading}
-                  className="flex items-center gap-2 bg-primary hover:bg-primary/90 w-full sm:w-auto focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  className="flex items-center gap-2 bg-primary hover:bg-primary/90 w-full sm:w-auto focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200"
                   aria-label="Submit project details"
                 >
                   LET THE MAGIC START

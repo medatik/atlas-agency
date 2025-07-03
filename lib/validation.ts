@@ -87,7 +87,7 @@ export const validateStep5 = (formData: FormData): FormErrors => {
 export const sanitizeInput = (input: string): string => {
   return input
     .replace(/[<>]/g, '') // Remove potential HTML tags
-    .trim();
+    .replace(/\s+/g, ' '); // Replace multiple spaces with single space but preserve spacing
 };
 
 export const validateEmail = (email: string): boolean => {
